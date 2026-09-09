@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathias Favre – Designer</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/tokens.css">
+    <link rel="stylesheet" href="css/typography.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    
+    <style>
+        /* EXTRA STYLE LABORATORIO */
+        body {
+            /* Baseline Grid di sfondo (4px) */
+            background-image: repeating-linear-gradient(
+                to bottom,
+                transparent,
+                transparent calc(var(--grid-baseline) - 1px),
+                rgba(23, 53, 47, 0.08) var(--grid-baseline)
+            );
+            background-size: 100% var(--grid-baseline);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .main-content {
+            flex: 1;
+            padding-top: calc(var(--grid-baseline) * 12);
+            padding-bottom: calc(var(--grid-baseline) * 12);
+        }
+
+        .test-section {
+            grid-column: 1 / -1;
+            margin-bottom: calc(var(--grid-baseline) * 10);
+        }
+
+        /* Box switcher per testare i 10 progetti live nel laboratorio */
+        .project-switcher-box {
+            grid-column: 1 / span 6;
+            margin-bottom: calc(var(--grid-baseline) * 8);
+            padding: calc(var(--grid-baseline) * 4);
+            border: 1px dashed var(--color-accent);
+        }
+
+        .project-switcher-box select {
+            background: transparent;
+            color: var(--color-text);
+            border: 1px solid var(--color-text);
+            padding: 4px 8px;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. HEADER -->
+    <header class="site-header">
+        <div class="header-grid">
+            <!-- Logotipo (Link alla Home) -->
+            <a href="index.html" class="logo">mathias <span>favre</span></a>
+
+            <!-- Nav Desktop (Col 8 - 12) -->
+            <ul class="header-nav">
+                <li><a href="work.html">WORK</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="https://www.instagram.com/mathiasfavre" target="_blank" rel="noopener noreferrer">IG</a></li>
+                <li><a href="https://www.linkedin.com/in/mathias-favre-a011a6326" target="_blank" rel="noopener noreferrer">IN</a></li>
+            </ul>
+
+            <!-- Toggle Mobile (Due cerchi semitrasparenti animati) -->
+            <button class="menu-toggle" aria-label="Toggle Navigation Menu">
+                <span class="menu-circle menu-circle-left"></span>
+                <span class="menu-circle menu-circle-right"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. MENU MOBILE OVERLAY A PAGINA INTERA -->
+    <div class="mobile-menu-overlay">
+        <ul class="mobile-menu-nav">
+            <li><a href="work.html">WORK</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+            <li><a href="https://www.instagram.com/mathiasfavre" target="_blank" rel="noopener noreferrer">IG</a></li>
+            <li><a href="https://www.linkedin.com/in/mathias-favre-a011a6326" target="_blank" rel="noopener noreferrer">IN</a></li>
+        </ul>
+    </div>
+
+    <!-- 3. MAIN (LABORATORIO) -->
+    <main class="grid-container main-content">
+        
+        <!-- Controller per testare i colori dei 10 progetti in tempo reale -->
+        <div class="project-switcher-box">
+            <p class="type-data">TEST COLORI PROGETTO (JSON Dataset):</p>
+            <select id="project-theme-selector">
+                <option value="default">Default Portfolio (Paper / Alpine / Bordeaux)</option>
+                <option value="001">001 - Tonica (#FFFFFF / #000000 / #283583)</option>
+                <option value="002">002 - Nook (#FFF9F4 / #233038 / #1C812C)</option>
+                <option value="003">003 - World Metro (#FFFFFF / #000000 / #CA0005)</option>
+                <option value="004">004 - BioMI2 (#FFFFFF / #000000 / #EE7656)</option>
+                <option value="005">005 - Blackcat Society (#FFF9EC / #1F1F1F / #9B1C2B)</option>
+                <option value="006">006 - Bergamo (#FFF7EA / #000000 / #13312C)</option>
+                <option value="007">007 - Nutrizione Aosta (#FFFFFF / #000000 / #0F4C82)</option>
+                <option value="008">008 - Licalbe Steiner (#FFFFFF / #060606 / #DA3541)</option>
+                <option value="009">009 - StudyFlow (#FFFFFF / #000000 / #1A67E7)</option>
+                <option value="010">010 - Yeux De Sel (#000000 / #FFFFFF / #C9C9C9)</option>
+            </select>
+        </div>
+
+        <div class="test-section">
+            <h1 class="type-display">Mathias Favre</h1>
+            <p class="type-body">Visual Communication Designer based in Italy.</p>
+        </div>
+
+        <div class="test-section" style="grid-column: 1 / 9;">
+            <h2 class="type-works">Titolo Progetto Lavori</h2>
+            <p class="type-body" style="margin-top: calc(var(--grid-baseline) * 4); margin-bottom: calc(var(--grid-baseline) * 4);">
+                Questo paragrafo descrittivo mostra come il testo normale eredita il colore primario del progetto, 
+                mentre il titolo del lavoro e il logo nell'header assumono sempre il colore di accento.
+            </p>
+            <p class="project-credits">Credits: Mathias Favre, Design & Direction</p>
+            <div style="margin-top: calc(var(--grid-baseline) * 6);">
+                <button class="btn-about-project">About the Project</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 4. FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <p class="footer-copy">© 2026 MATHIAS FAVRE</p>
+            <p class="footer-credits">WEBSITE DESIGNED AND CODED BY MATHIAS FAVRE.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script src="js/main.js"></script>
+</body>
+</html>

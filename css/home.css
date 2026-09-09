@@ -1,0 +1,222 @@
+/* ========================================
+   HOME PAGE SPECIFIC STYLES
+   ======================================== */
+
+.home-hero {
+  /* Portato a 16 baseline come richiesto */
+  margin-top: calc(var(--grid-baseline) * 20); 
+  position: relative;
+  align-items: center; 
+}
+
+/* ----------------------------------------
+   CERCHI DESKTOP (Logica Max-Width per Intersezione)
+   ---------------------------------------- */
+.circles-wrapper {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  width: 100%;
+  /* 
+     Desktop: Cerchi a 96 baseline, area intersezione 36 baseline.
+     Larghezza totale necessaria = 96 + 96 - 36 = 156 baselines.
+  */
+  max-width: calc(var(--grid-baseline) * 156);
+  height: calc(var(--grid-baseline) * 96);
+  margin: 0 auto; /* Centra il gruppo nell'area di lavoro */
+  position: relative;
+  z-index: 2;
+}
+
+.home-circle {
+  width: calc(var(--grid-baseline) * 96); 
+  height: calc(var(--grid-baseline) * 96);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  
+  filter: blur(8px);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+.circle-left {
+  left: 0; /* Allineato all'estremo sinistro del gruppo */
+  /* Opacità aggiornata al 10% */
+  background-color: color-mix(in srgb, var(--color-alpine) 10%, transparent);
+}
+
+.circle-right {
+  right: 0; /* Allineato all'estremo destro del gruppo */
+  /* Opacità aggiornata al 10% */
+  background-color: color-mix(in srgb, var(--color-bordeaux) 10%, transparent);
+}
+
+/* ----------------------------------------
+   TITOLI HOME
+   ---------------------------------------- */
+.home-titles-wrapper {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  
+  align-items: end; 
+  pointer-events: none;
+  z-index: 10;
+  
+  grid-template-rows: auto auto; 
+  row-gap: calc(var(--grid-baseline) * 8);
+}
+
+.home-title-left, .home-title-right {
+  grid-row: 1;
+}
+
+.home-title-left {
+  grid-column: 1 / 7;
+  white-space: nowrap; 
+}
+
+.home-title-right {
+  grid-column: 7 / 13;
+  text-align: right; 
+}
+
+/* Testi Hover */
+.hover-text {
+  grid-row: 2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hover-left {
+  grid-column: 1 / 7;
+  text-align: left;
+}
+
+.hover-right {
+  grid-column: 7 / 13;
+  text-align: right;
+}
+
+.home-hero:has(.circle-left:hover) .hover-left { opacity: 1; }
+.home-hero:has(.circle-right:hover) .hover-right { opacity: 1; }
+
+/* ----------------------------------------
+   ABOUT TEASER SECTION & COORDINATE
+   ---------------------------------------- */
+.home-about {
+  margin-top: calc(var(--grid-baseline) * 12);
+  
+  /* Mantiene il distacco dal footer fisso e sicuro.
+     Il flex globale del body spingerà il footer in fondo allo schermo
+     se c'è spazio, altrimenti ci saranno esattamente 16 baselines di margine. */
+  margin-bottom: calc(var(--grid-baseline) * 16);
+  
+  align-items: end;
+}
+
+.home-about-text, .home-coord-left, .home-coord-right {
+  grid-row: 1;
+}
+
+.home-about-text {
+  grid-column: 5 / 9;
+  text-align: justify; 
+  margin: 0;
+}
+
+.coord-text {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  color: var(--color-accent);
+}
+
+.home-coord-left {
+  grid-column: 1 / 5;
+  text-align: right;
+  margin-bottom: 0; 
+}
+
+.home-coord-right {
+  grid-column: 9 / 13;
+  text-align: left;
+  margin-bottom: var(--type-body-lh); 
+}
+
+
+/* ----------------------------------------
+   MOBILE OVERRIDES
+   ---------------------------------------- */
+@media (max-width: 768px) {
+  .home-hero {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Cerchi Mobile: 72 Baseline e intersezione automatica elastica */
+  .circles-wrapper {
+    display: block;
+    width: 100%;
+    /* 
+       Mobile: Cerchi a 72 baseline, area intersezione target 24 baseline.
+       Larghezza totale = 72 + 72 - 24 = 120 baselines.
+       
+       Utilizzando max-width e margin: 0 auto, il gruppo rimarrà centrato 
+       finché la pagina è più larga. Se la pagina si restringe, si legano ai 
+       margini esterni della pagina (perché toccano i bordi) e l'intersezione
+       interno aumenta organicamente.
+    */
+    max-width: calc(var(--grid-baseline) * 120);
+    height: calc(var(--grid-baseline) * 72); 
+    margin: 0 auto;
+    margin-bottom: calc(var(--grid-baseline) * 12);
+  }
+  
+  .home-circle {
+    width: calc(var(--grid-baseline) * 72);
+    height: calc(var(--grid-baseline) * 72);
+  }
+  
+  .home-titles-wrapper {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+  }
+  
+  .home-title-left {
+    grid-column: 1 / 3;
+    white-space: normal;
+  }
+  .home-title-right {
+    grid-column: 3 / 5;
+    text-align: right;
+  }
+  .hover-left { grid-column: 1 / 3; }
+  .hover-right { grid-column: 3 / 5; }
+
+  /* About section mobile */
+  .home-about {
+    margin-top: calc(var(--grid-baseline) * 16); 
+  }
+  
+  .home-about-text {
+    grid-column: 1 / 3;
+  }
+  
+  .home-coord-left { 
+    grid-column: 3 / 5;
+    text-align: left;
+    margin-bottom: 0;
+  }
+
+  .home-coord-right { 
+    grid-column: 3 / 5;
+    text-align: left;
+    margin-bottom: var(--type-body-lh); 
+  }
+}

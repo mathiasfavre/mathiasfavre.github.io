@@ -1,0 +1,35 @@
+/* ========================================
+   4. LAYOUT
+   ======================================== */
+   
+/* Sticky Footer Setup */
+html, body {
+  min-height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  /* main riempie lo spazio disponibile, spingendo il footer giù */
+  flex: 1 0 auto; 
+  display: flex;
+  flex-direction: column;
+}
+
+.site-footer {
+  /* Impedisce al footer di restringersi in caso di problemi di spazio */
+  flex-shrink: 0;
+}
+
+/* Grid Container */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  width: 100%;
+  padding: 0 var(--grid-margin);
+  margin: 0 auto;
+}

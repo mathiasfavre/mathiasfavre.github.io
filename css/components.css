@@ -1,0 +1,256 @@
+/* ========================================
+   5. COMPONENTS (Header, Footer, Controls)
+   ======================================== */
+
+/* ----------------------------------------
+   A. HEADER & LOGO
+   ---------------------------------------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  
+  /* Padding instead of margin so it acts as a solid bar */
+  padding-top: var(--header-margin-top);
+  padding-bottom: calc(var(--grid-baseline) * 6);
+  background-color: color-mix(in srgb, var(--color-bg) 50%, transparent); 
+  backdrop-filter: blur(8px);
+  
+  /* Animazione per scomparsa/comparsa allo scroll */
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.header-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--grid-margin);
+}
+
+.logo {
+  grid-column: 1 / span 4;
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-size: 1.25rem;       
+  line-height: 1.5rem;      
+  color: var(--color-accent); 
+  text-decoration: none;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.logo span {
+  font-weight: 700;
+  font-style: italic;
+}
+
+.header-nav {
+  grid-column: 8 / 13;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header-nav li a {
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.header-nav li a:hover {
+  opacity: 0.6;
+}
+
+/* Offset per il body poiché l'header è fixed */
+body {
+  padding-top: calc(var(--header-margin-top) + calc(var(--grid-baseline) * 4) + 1.5rem);
+}
+
+/* ----------------------------------------
+   B. HAMBURGER MENU MOBILE
+   ---------------------------------------- */
+.menu-toggle {
+  display: none; 
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  width: 32px;
+  height: 20px;
+  justify-self: end;
+  grid-column: 4 / 5;
+}
+
+.menu-circle {
+  position: absolute;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+}
+
+.menu-circle-left {
+  left: 0;
+  background-color: color-mix(in srgb, var(--color-text) 25%, transparent);
+}
+.menu-circle-right {
+  right: 0;
+  background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+.menu-open .menu-circle-left { transform: translateX(6px); }
+.menu-open .menu-circle-right { transform: translateX(-6px); }
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-bg); 
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--grid-baseline) * 35) var(--grid-margin) var(--footer-margin-bottom);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.menu-open .mobile-menu-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-menu-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--grid-baseline) * 8); 
+}
+
+.mobile-menu-nav li a {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;       
+  line-height: 2rem;       
+  text-transform: uppercase;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* ----------------------------------------
+   C. FOOTER
+   ---------------------------------------- */
+.site-footer {
+  width: 100%;
+  margin-bottom: var(--footer-margin-bottom);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--grid-margin);
+}
+
+.footer-copy {
+  /* Desktop: esteso per occupare 2 colonne in più (da span 3 a span 5) */
+  grid-column: 1 / span 4;
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0;
+}
+
+.footer-credits {
+  /* Desktop: Allineato a destra */
+  grid-column: 5 / 13;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  color: var(--color-text); 
+  margin: 0;
+}
+
+/* Riparazione dell'allineamento del footer nel menu mobile */
+.mobile-menu-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--grid-baseline) * 2);
+  width: 100%;
+  /* Nessun padding laterale qui, eredita quello dell'overlay */
+  padding: 0;
+}
+.mobile-menu-footer .footer-copy,
+.mobile-menu-footer .footer-credits {
+  text-align: left;
+  grid-column: auto;
+}
+
+/* ----------------------------------------
+   D. BUTTON "ABOUT THE PROJECT"
+   ---------------------------------------- */
+.btn-about-project {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  color: var(--color-text);
+  border: none;
+  padding: calc(var(--grid-baseline) * 2) calc(var(--grid-baseline) * 4);
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+.btn-about-project:hover { background-color: color-mix(in srgb, var(--color-accent) 35%, transparent); }
+
+/* ----------------------------------------
+   MEDIA QUERY MOBILE
+   ---------------------------------------- */
+@media (max-width: 768px) {
+  .logo { grid-column: 1 / span 3; }
+  .header-nav { display: none; }
+  .menu-toggle { display: block; }
+  
+  .site-footer .footer-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--grid-baseline) * 2); 
+  }
+  .site-footer .footer-copy, 
+  .site-footer .footer-credits {
+    grid-column: auto;
+    text-align: left;
+  }
+}

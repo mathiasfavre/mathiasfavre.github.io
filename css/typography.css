@@ -1,0 +1,63 @@
+/* ========================================
+   3. TYPOGRAPHY
+   ======================================== */
+body {
+  font-family: var(--font-secondary);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.type-display {
+  font-family: var(--font-primary);
+  font-weight: 300;
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-lh);
+  margin: 0;
+}
+
+.type-display em {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.type-body {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-lh);
+  margin: 0;
+}
+
+.type-body em {
+  font-style: italic;
+}
+
+.type-works {
+  font-family: var(--font-secondary);
+  font-weight: 500;
+  font-size: var(--type-works-size);
+  line-height: var(--type-works-lh);
+  color: var(--color-accent); /* Prende sempre il colore d'accento */
+  margin: 0;
+}
+
+.type-data {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Credits alla fine dell'introduzione di progetto */
+.project-credits {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  color: var(--color-accent); /* Prende il colore d'accento */
+  margin: 0;
+}

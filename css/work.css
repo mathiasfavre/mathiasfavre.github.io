@@ -1,0 +1,228 @@
+/* ========================================
+   WORK PAGE SPECIFIC STYLES
+   ======================================== */
+
+.work-hero {
+  margin-top: calc(var(--grid-baseline) * 20);
+  position: relative;
+  align-items: center; 
+}
+
+/* ----------------------------------------
+   CERCHIO DESKTOP & MOBILE (Centrato con i titoli)
+   ---------------------------------------- */
+.work-circle-wrapper {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  
+  height: calc(var(--grid-baseline) * 96);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.work-circle {
+  width: calc(var(--grid-baseline) * 96);
+  height: calc(var(--grid-baseline) * 96);
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--color-alpine) 15%, transparent);
+  filter: blur(70px);
+}
+
+/* ----------------------------------------
+   TITOLI WORK
+   ---------------------------------------- */
+.work-titles-wrapper {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  align-items: center; /* Centrati sul cerchio */
+  pointer-events: none;
+  z-index: 10;
+}
+
+.work-title-left {
+  grid-column: 1 / 7;
+  text-align: left;
+}
+
+.work-title-right {
+  grid-column: 7 / 13;
+  text-align: right; 
+}
+
+/* ----------------------------------------
+   ABOUT TEASER SECTION & PROJECTS COUNT
+   ---------------------------------------- */
+.work-about {
+  margin-top: calc(var(--grid-baseline) * 12);
+  margin-bottom: calc(var(--grid-baseline) * 24); /* Distanza dalla galleria */
+  align-items: end;
+}
+
+.work-about-text, .work-projects-count {
+  grid-row: 1;
+}
+
+.work-about-text {
+  grid-column: 5 / 9;
+  text-align: justify; 
+  margin: 0;
+}
+
+.work-projects-count {
+  grid-column: 9 / 13;
+  text-align: left;
+  margin-bottom: 0; 
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  color: var(--color-accent);
+}
+
+/* ----------------------------------------
+   GALLERY GRID
+   ---------------------------------------- */
+.work-gallery {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  row-gap: calc(var(--grid-baseline) * 12);
+  margin-bottom: calc(var(--grid-baseline) * 16);
+}
+
+.project-card {
+  grid-column: span 4;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.project-cover {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Aggiunto il supporto ai video (webm/mp4) per la cover */
+.project-cover img, .project-cover video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-cover img, 
+.project-card:hover .project-cover video {
+  transform: scale(1.02); 
+}
+
+.project-hover-tag {
+  position: absolute;
+  bottom: calc(var(--grid-baseline) * 3);
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: calc(var(--grid-baseline) * 2);
+  background-color: color-mix(in srgb, var(--color-paper) 70%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: calc(var(--grid-baseline) * 3);
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  color: var(--color-alpine); 
+}
+
+.project-card:hover .project-hover-tag {
+  opacity: 1;
+}
+
+.project-info {
+  margin-top: calc(var(--grid-baseline) * 4);
+}
+
+.project-text {
+  margin: 0;
+}
+
+.project-caption {
+  color: var(--color-cloud);
+}
+
+/* ----------------------------------------
+   MOBILE OVERRIDES
+   ---------------------------------------- */
+@media (max-width: 768px) {
+  
+  /* L'Hero DEVE rimanere Grid su mobile affinchè cerchio e testi si sovrappongano 
+     nella stessa cella (grid-row: 1) e si allineino al centro. */
+  .work-hero {
+    display: grid;
+    /* La distanza tra cerchio/titolo centrati e blocco testo: 12 baseline */
+  }
+  
+  /* Cerchio Mobile: 72 Baseline */
+  .work-circle-wrapper {
+    height: calc(var(--grid-baseline) * 72);
+  }
+  
+  .work-circle {
+    width: calc(var(--grid-baseline) * 72);
+    height: calc(var(--grid-baseline) * 72);
+    filter: blur(50px);
+  }
+  
+  /* Titoli centrati al cerchio, ai margini */
+  .work-titles-wrapper {
+    grid-template-columns: repeat(var(--grid-columns), 1fr);
+  }
+  
+  .work-title-left {
+    grid-column: 1 / 3;
+    text-align: left; /* Al margine sinistro */
+  }
+  
+  .work-title-right {
+    grid-column: 3 / 5;
+    text-align: right; /* Al margine destro */
+  }
+
+  /* About section mobile: margin top 12 baselines dal cerchio sovrastante */
+  .work-about {
+    margin-top: calc(var(--grid-baseline) * 12); 
+  }
+  
+  .work-about-text {
+    grid-column: 1 / 3; /* Usa tutte le colonne, se necessario */
+  }
+  
+  .work-projects-count {
+    grid-column: 3 / 5;
+    text-align: left; /* Allineato a sinistra dalla 3 colonna in poi */
+    margin-bottom: 0;
+  }
+
+  /* Gallery Mobile (1 colonna) */
+  .project-card {
+    grid-column: 1 / -1;
+  }
+}
+
+/* BREAKPOINT INTERMEDIO (Tablet/Laptop Piccolo) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .project-card {
+    grid-column: span 6; /* 2 progetti per riga */
+  }
+}

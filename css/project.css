@@ -1,0 +1,362 @@
+/* ========================================
+   PROJECT PAGE SPECIFIC STYLES
+   ======================================== */
+
+.page-project {
+  /* Testo giustificato globale sulla pagina */
+  text-align: justify;
+}
+
+/* ----------------------------------------
+   HERO IMAGE
+   ---------------------------------------- */
+.proj-hero-wrapper {
+  margin-top: calc(var(--grid-baseline) * 12);
+  grid-column: 2 / 12;
+}
+
+.proj-hero {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.proj-hero img, .proj-hero video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ----------------------------------------
+   PROJECT INFO HEADER
+   ---------------------------------------- */
+.proj-info-wrapper {
+  margin-top: calc(var(--grid-baseline) * 12);
+  margin-bottom: calc(var(--grid-baseline) * 24);
+  align-items: start;
+}
+
+.proj-name { grid-column: 2 / 6; margin: 0; }
+
+.proj-class { 
+  grid-column: 6 / 8; 
+  text-align: left;
+  text-transform: uppercase; /* Trasformato in maiuscolo */
+  margin: 0;
+}
+
+.proj-year { 
+  grid-column: 8 / 9; 
+  text-align: left;
+  margin: 0;
+}
+
+.proj-caption { grid-column: 9 / 12; margin: 0; }
+
+/* ----------------------------------------
+   GALLERY & DESCRIPTION SECTION
+   ---------------------------------------- */
+.proj-gallery-wrapper {
+  position: relative;
+  /* Tolto il padding gigante di 40. Usiamo margin per lo spazio corretto */
+  margin-bottom: calc(var(--grid-baseline) * 12); 
+}
+
+.proj-gallery-wrapper .grid-container {
+  align-items: start; /* Fondamentale per far affiancare le due colonne */
+}
+
+/* VIEW DEFAULT (NO DESC) */
+.gallery-grid {
+  grid-column: 1 / -1;
+  grid-row: 1; /* Forziamo riga 1 */
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  column-gap: var(--grid-gutter);
+  row-gap: calc(var(--grid-baseline) * 3);
+}
+
+.gallery-item img, .gallery-item video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+body:not(.desc-open) .img-01 { grid-column: 1 / 13; }
+body:not(.desc-open) .img-02 { grid-column: span 6; }
+
+/* Nascondi il pannello descrizione di default */
+.proj-desc-panel {
+  display: none;
+}
+
+/* VIEW DESC-OPEN (DESKTOP) - STILE PENTAGRAM */
+body.desc-open .gallery-grid {
+  grid-column: 1 / 8; /* Il contenitore si restringe a sx! */
+  grid-row: 1;
+  display: flex; /* Le foto si incolonnano automaticamente */
+  flex-direction: column;
+  gap: calc(var(--grid-baseline) * 3);
+}
+
+body.desc-open .img-01, 
+body.desc-open .img-02 {
+  width: 100%; 
+}
+
+body.desc-open .proj-desc-panel {
+  display: block;
+  grid-column: 9 / 13;
+  grid-row: 1; /* Parallelo alla galleria! */
+  
+  position: sticky;
+  /* Top verrà manipolato dallo script "Smart Sticky" in JS */
+  top: calc(var(--grid-baseline) * 24); 
+  height: max-content; /* Non si espande inutilmente */
+  z-index: 10;
+}
+
+/* Formattazione Descrizione */
+.proj-desc-text {
+  margin-bottom: calc(var(--grid-baseline) * 12);
+}
+
+/* Formattazione Credits */
+.main-credits-title {
+  color: var(--color-accent);
+  margin-bottom: calc(var(--grid-baseline) * 8);
+  font-weight: 500;
+}
+
+.credits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: var(--grid-gutter);
+}
+
+.credit-item {
+  margin-bottom: calc(var(--grid-baseline) * 8);
+}
+
+.credit-title {
+  color: var(--color-accent);
+  margin-bottom: calc(var(--grid-baseline) * 4);
+}
+
+.credit-value {
+  margin: 0;
+  text-align: left; /* Testo non giustificato */
+}
+
+/* ----------------------------------------
+   ABOUT BUTTON FIXED
+   ---------------------------------------- */
+.btn-about-fixed {
+  position: fixed;
+  bottom: calc(var(--grid-baseline) * 16);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 85; 
+  display: flex; /* Flex è molto più stabile di inline-flex */
+  align-items: center;
+  justify-content: center;
+  background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  color: var(--color-text); 
+  border: none;
+  padding: calc(var(--grid-baseline) * 3) calc(var(--grid-baseline) * 4);
+  border-radius: calc(var(--grid-baseline) * 2);
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  line-height: var(--type-data-lh);
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: padding 0.3s ease, background-color 0.3s ease;
+}
+
+/* Icona + animata */
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0; /* Nascondiamo la larghezza */
+  opacity: 0;
+  font-size: 1.5em; /* Simbolo ingrandito */
+  overflow: hidden;
+  transition: width 0.3s ease, opacity 0.3s ease, margin-right 0.3s ease;
+}
+
+.btn-about-fixed:hover .btn-icon {
+  width: 20px; /* Assegniamo una larghezza esatta in pixel così viene mostrato! */
+  opacity: 1;
+  margin-right: calc(var(--grid-baseline) * 2); /* Avvicinato di una baseline */
+}
+
+.btn-icon span {
+  display: block;
+  margin-top: -4px; /* Centratura ottica millimetrica verticale */
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+
+/* Croce rotata se la descrizione è aperta */
+body.desc-open .btn-about-fixed .btn-icon span {
+  transform: rotate(45deg);
+}
+
+
+/* ----------------------------------------
+   MOBILE OVERRIDES
+   ---------------------------------------- */
+@media (max-width: 768px) {
+  
+  /* Hero */
+  .proj-hero-wrapper {
+    grid-column: 1 / 5;
+  }
+
+  /* Info */
+  .proj-info-wrapper {
+    row-gap: 0; 
+  }
+
+  .proj-name { grid-column: 1 / 3; }
+  .proj-class { grid-column: 3 / 4; }
+  
+  .proj-year { 
+    grid-column: 4 / 5; 
+    text-align: right; 
+  }
+  
+  .proj-caption { 
+    grid-column: 3 / 5;
+    margin-top: calc(var(--grid-baseline) * 16);
+  }
+
+  /* Gallery */
+  body:not(.desc-open) .img-01,
+  body:not(.desc-open) .img-02 { 
+    grid-column: 1 / 5; 
+  }
+  
+  /* VIEW DESC-OPEN (MOBILE) - Overlay a pagina intera */
+  body.desc-open {
+    overflow: hidden; /* Blocca scorrimento pagina sotto */
+  }
+  
+  body.desc-open .proj-desc-panel {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 80; /* SOTTO l'header (100) e il menu overlay (90), ma SOPRA la galleria */
+    background-color: var(--color-bg);
+    
+    padding-top: calc(var(--header-margin-top) + calc(var(--grid-baseline) * 16));
+    padding-left: var(--grid-margin);
+    padding-right: var(--grid-margin);
+    /* Extra padding bottom in modo da poter scrollare sotto il bottone */
+    padding-bottom: calc(var(--grid-baseline) * 40);
+    overflow-y: auto;
+  }
+  
+  .proj-desc-text {
+    width: 100%;
+  }
+
+  .credits-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  /* Nascondi footer standard quando overlay è aperto */
+  body.desc-open .site-footer {
+    display: none;
+  }
+}
+
+/* ----------------------------------------
+   FONT TESTER CUSTOM CONTROLS
+   ---------------------------------------- */
+.font-tester-section {
+  margin-bottom: calc(var(--grid-baseline) * 24);
+}
+
+.font-tester-wrapper {
+  grid-column: 1 / -1;
+  background-color: color-mix(in srgb, var(--color-accent) 4%, transparent);
+  border-radius: calc(var(--grid-baseline) * 2);
+  padding: calc(var(--grid-baseline) * 6);
+}
+
+.font-tester-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--grid-baseline) * 6);
+  margin-bottom: calc(var(--grid-baseline) * 8);
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--type-data-size);
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.ft-control {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--grid-baseline) * 2);
+}
+
+/* Togli stile default Select e applica Design System */
+.ft-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  color: var(--color-text);
+  border: none;
+  border-radius: calc(var(--grid-baseline) * 2);
+  padding: 6px 32px 6px 12px;
+  font-family: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 1L5 5L9 1" stroke="%2317352F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+/* Togli stile default Range Slider e applica Design System */
+.ft-control input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 120px;
+  height: 2px;
+  background: var(--color-text);
+  outline: none;
+  cursor: pointer;
+}
+.ft-control input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--color-accent) 70%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+/* Area di testo flessibile */
+.ft-textarea {
+  width: 100%;
+  min-height: 150px;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  resize: none;
+  outline: none;
+  overflow: hidden; /* Nasconde scrollbar interne */
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+}

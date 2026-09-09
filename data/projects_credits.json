@@ -1,0 +1,83 @@
+[
+  {
+    "id":"001",
+    "course":"Type Design",
+    "project_team":"Mathias Favre<br>Nicola Castriotta<br>Valentina Danieli<br>Alessandro Domi<br>Carlo Galli",
+    "supervising_professor":"Beatrice D’Agostino",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Tonica<br>Helvetica"
+  },
+  {
+    "id":"002",
+    "course":"Metadesign Studio",
+    "project_team":"Mathias Favre<br>Anouk Avagyan<br>Riccardo Catellani<br>Marcello Federici<br>Davide Molteni<br>Francesca Pertosa",
+    "supervising_professor":"Luca Maria Buttafava<br>Daris Diego Del Ciello<br>Stefano Mandato",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Kaleko 205 Round<br>Plus Jakarta Sans"
+  },
+  {
+    "id":"003",
+    "course":"Computer Graphics Studio for Information Design",
+    "project_team":"Mathias Favre<br>Michele Lucio Basso<br>Emma Della Valle<br>Chiara Fois<br>Viola Naldi<br>David Zhou",
+    "supervising_professor":"Michele Mauri<br>Davide Conficconi",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"P22 Underground"
+  },
+  {
+    "id":"004",
+    "course":"Visual Project Elements Studio",
+    "project_team":"Mathias Favre<br>Matteo Contarin<br>Alessandro Domi",
+    "supervising_professor":"Andrea Giuseppe Manciaracina<br>Massimo Hachen",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Henderson Slab"
+  },
+  {
+    "id":"005",
+    "course":"Corporate Identity Studio",
+    "project_team":"Mathias Favre<br>Emma Della Valle<br>Alessandro Domi<br>Giulia Furlani<br>Viola Sabbatini",
+    "supervising_professor":"Marcello Jacopo Biffi<br>Gaetano Calogero Grizzanti<br>Francesco Ermanno Guida",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Sabotage<br>Bastardo Grotesk"
+  },
+  {
+    "id":"006",
+    "course":" ",
+    "project_team":" ",
+    "supervising_professor":" ",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Bergamo Display"
+  },
+  {
+    "id":"007",
+    "course":" ",
+    "project_team":" ",
+    "supervising_professor":" ",
+    "client":"Dr. Silvia Broccali",
+    "project_manager":" ",
+    "typefaces":"FF Mark"
+  },
+  {
+    "id":"008",
+    "course":"Editorial Graphic Design Studio",
+    "project_team":"Mathias Favre<br>Anouk Avagyan<br>Viola Naldi<br>Lucrezia Vallar<br>Valentina Silvestro",
+    "supervising_professor":"Daniela Anna Calabi<br>Monica Fumagalli<br>Beatrice Borghi<br>Cecilia Bianchini",
+    "client":" ",
+    "project_manager":" ",
+    "typefaces":"Neue Haas Grotesk<br>JetBrains Mono"
+  },
+  {
+    "id":"009",
+    "course":" ",
+    "project_team":"Mathias Favre<br>Arianna Ambrosi<br>Alessia Donatelli",
+    "supervising_professor":" ",
+    "client":"StudyFlow",
+    "project_manager":"Daniele D'Apuzzo",
+    "typefaces":"Outfit<br>Avenir Next"
+  }
+]
