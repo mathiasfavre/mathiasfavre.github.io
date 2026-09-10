@@ -74,8 +74,9 @@
   --type-works-size: 1.6875rem;     /* 27px (-25% da 36px) */
   --type-works-lh: 2.25rem;         /* 36px = 9 baseline */
 
-  --type-data-size: 1rem;           /* 16px */
-  --type-data-lh: 1.25rem;          /* 20px = 5 * baseline */
+  /* Type Data (Ridotto a 14px, interlinea allineata al body a 24px) */
+  --type-data-size: 0.875rem;       /* 14px */
+  --type-data-lh: 1.5rem;           /* 24px = 6 * baseline (Stessa del type-body) */
 
   /* GRID & SPACING (Desktop) */
   --grid-columns: 12;
@@ -89,10 +90,6 @@
 /* BREAKPOINTS */
 @media (max-width: 768px) {
   :root {
-    /* Sotto @media (max-width: 768px) (Mobile) */
-    --type-works-size: 1.3125rem;   /* 21px (-25% da 28px) */
-    --type-works-lh: 2rem;          /* 32px = 8 baseline */
-
     --grid-columns: 4;
     --grid-margin: 1.25rem;         /* 20px */
     --grid-gutter: 0.75rem;         /* 12px */

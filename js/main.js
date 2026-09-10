@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="font-tester-controls">
                 ${isTonica ? `<select id="ft-weight" class="ft-select">${weightOptions}</select>` : `<div class="ft-static-weight">Regular</div>`}
                 <div class="ft-control"><label>Size</label><input type="range" id="ft-size" min="10" max="200" value="80"><span id="ft-size-val">80</span></div>
-                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="20" value="0"><span id="ft-leading-val">0</span></div>
+                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="20" value="10"><span id="ft-leading-val">0</span></div>
                 <div class="ft-control"><label>Spacing</label><input type="range" id="ft-spacing" min="-20" max="20" value="0"><span id="ft-spacing-val">0</span></div>
               </div>
               <textarea id="ft-textarea" class="ft-textarea" maxlength="100" spellcheck="false">The quick brown fox jumps over the lazy dog.</textarea>
@@ -273,5 +273,29 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(autoResize, 500); 
       }
     });
+  }
+  // --- ABOUT PAGE LOGIC (Allineamento Etichette Matematico) ---
+  if (document.querySelector('.about-bio')) {
+    const alignAboutLabels = () => {
+      const bioTextObj = document.querySelector('.bio-text');
+      const labelsWrapper = document.querySelector('.about-labels-wrapper');
+      const labelBio = document.querySelector('.about-label-bio');
+      
+      if (bioTextObj && labelsWrapper && labelBio) {
+        // 1. Calcola l'altezza di tutto il testo bio + il gap di 12 baseline (48px)
+        const targetTop = bioTextObj.offsetHeight + 48; 
+        
+        // 2. Calcola l'altezza dell'etichetta superiore (su mobile va a capo su 2 righe!)
+        const labelBioHeight = labelBio.offsetHeight;
+        
+        // 3. Il margine di offset corretto è la differenza tra i due!
+        const offset = targetTop - labelBioHeight;
+        
+        labelsWrapper.style.setProperty('--social-offset', `${offset}px`);
+      }
+    };
+
+    window.addEventListener('resize', alignAboutLabels);
+    setTimeout(alignAboutLabels, 200); // Ritardo per inizializzazione corretta dei font
   }
 });
