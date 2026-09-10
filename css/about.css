@@ -32,6 +32,14 @@
   /* Colore bordeaux per About */
   background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
   filter: blur(70px);
+
+  cursor: pointer;
+  pointer-events: auto;
+  animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
+  transition: filter var(--motion-normal) var(--ease-interaction);
+}
+.about-circle:hover, .work-circle:hover {
+  filter: blur(20px); /* Diventa leggermente più nitido/presente */
 }
 
 /* ----------------------------------------

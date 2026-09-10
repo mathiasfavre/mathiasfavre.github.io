@@ -72,8 +72,24 @@
   transition: opacity 0.2s ease;
 }
 
-.header-nav li a:hover {
-  opacity: 0.6;
+/* Effetto Gaze sui Link Header */
+.header-nav li a, .mobile-menu-nav li a {
+  transition: filter var(--motion-normal) var(--ease-interaction), 
+              opacity var(--motion-normal) var(--ease-interaction),
+              color var(--motion-normal) var(--ease-interaction);
+}
+
+/* Quando si passa sopra la lista, tutto sfoca in FAR */
+.header-nav:hover li a, .mobile-menu-nav:hover li a {
+  filter: blur(var(--blur-mid));
+  opacity: 0.5;
+}
+
+/* Il link puntato va in FOCUS */
+.header-nav li a:hover, .mobile-menu-nav li a:hover {
+  filter: blur(0);
+  opacity: 1;
+  color: var(--color-accent); /* Diventa Bordeaux */
 }
 
 /* Offset per il body poiché l'header è fixed */

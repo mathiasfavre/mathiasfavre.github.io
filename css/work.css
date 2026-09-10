@@ -30,6 +30,14 @@
   border-radius: 50%;
   background-color: color-mix(in srgb, var(--color-alpine) 15%, transparent);
   filter: blur(70px);
+
+  cursor: pointer;
+  pointer-events: auto;
+  animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
+  transition: filter var(--motion-normal) var(--ease-interaction);
+}
+.about-circle:hover, .work-circle:hover {
+  filter: blur(20px); /* Diventa leggermente più nitido/presente */
 }
 
 /* ----------------------------------------
@@ -105,6 +113,27 @@
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+  /* Riposo (tutto normale) */
+  filter: blur(0);
+  opacity: 1;
+  transform: translateY(0);
+  transition: filter var(--motion-normal) var(--ease-interaction), 
+              opacity var(--motion-normal) var(--ease-interaction),
+              transform var(--motion-normal) var(--ease-interaction),
+              box-shadow var(--motion-normal) var(--ease-interaction);
+}
+
+/* QUANDO SI ENTRA NELLA GALLERIA: Tutti i progetti diventano MID/FAR */
+.work-gallery:hover .project-card {
+  filter: blur(var(--blur-mid));
+  opacity: 0.5;
+}
+
+/* QUANDO SI PUNTA UN PROGETTO: Diventa FOCUS assoluto */
+.work-gallery .project-card:hover {
+  filter: blur(0);
+  opacity: 1;
+  z-index: 10;
 }
 
 .project-cover {
@@ -112,6 +141,7 @@
   aspect-ratio: 4 / 3;
   position: relative;
   overflow: hidden;
+  border-radius: calc(var(--grid-baseline) * 2); /* Leggermente stondata per accogliere l'ombra */
 }
 
 /* Aggiunto il supporto ai video (webm/mp4) per la cover */
@@ -120,12 +150,17 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform var(--motion-normal) var(--ease-interaction);
 }
 
 .project-card:hover .project-cover img, 
 .project-card:hover .project-cover video {
-  transform: scale(1.02); 
+  /* Drop shadow chiaro colore alpine come richiesto */
+  transform: scale(1.03);
+}
+
+.project-card:hover .project-cover {
+  box-shadow: 0 0 calc(var(--grid-baseline) * 3) calc(var(--grid-baseline) * 1) color-mix(in srgb, var(--color-alpine) 8%, transparent);
 }
 
 .project-hover-tag {
@@ -137,16 +172,18 @@
   background-color: color-mix(in srgb, var(--color-paper) 70%, transparent);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: calc(var(--grid-baseline) * 3);
+  padding: calc(var(--grid-baseline) * 2);
   margin: 0;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: transform var(--motion-fast) var(--ease-interaction), 
+              opacity var(--motion-fast) var(--ease-interaction);
   white-space: nowrap;
   color: var(--color-alpine); 
 }
 
 .project-card:hover .project-hover-tag {
   opacity: 1;
+  transform: translateX(-50%) translateY(0); /* Raggiunge la posizione finale fluidamente */
 }
 
 .project-info {

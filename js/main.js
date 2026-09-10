@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('.site-header');
   const menuToggle = document.querySelector('.menu-toggle');
 
+  // Trigger Page Transition (Fade-in iniziale)
+  setTimeout(() => body.classList.add('page-loaded'), 50);
+
   // 1. Header Scroll Logic
   let lastScrollY = window.scrollY;
   window.addEventListener('scroll', () => {
@@ -33,29 +36,38 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // --- HOME CIRCLES MOUSE FOLLOW ---
+  const homeCircles = document.querySelectorAll('.home-circle');
+  if (homeCircles.length > 0) {
+    homeCircles.forEach(circle => {
+      circle.addEventListener('mousemove', (e) => {
+        const rect = circle.getBoundingClientRect();
+        const x = (e.clientX - rect.left - rect.width / 2) * 0.15; 
+        const y = (e.clientY - rect.top - rect.height / 2) * 0.15;
+        circle.style.transform = `translate(${x}px, ${y}px) scale(1.02)`;
+        circle.style.animationPlayState = 'paused'; 
+      });
+      circle.addEventListener('mouseleave', () => {
+        circle.style.transform = '';
+        circle.style.animationPlayState = 'running'; 
+      });
+    });
+  }
+
+  // --- CLICK CIRCLES TO SCROLL ---
+  const aboutCircle = document.querySelector('.about-circle');
+  const workCircle = document.querySelector('.work-circle');
+  if (aboutCircle) aboutCircle.addEventListener('click', () => document.querySelector('.about-intro').scrollIntoView({behavior: 'smooth'}));
+  if (workCircle) workCircle.addEventListener('click', () => document.querySelector('.work-about').scrollIntoView({behavior: 'smooth'}));
+
   // 3. PROJECT PAGE LOGIC
   const urlParams = new URLSearchParams(window.location.search);
   const projectId = urlParams.get('id');
 
   if (document.body.classList.contains('page-project') && projectId) {
     
-    // Mappa ID progetto -> Cartella immagini
-    const folderMap = {
-      '001': 'tonica',
-      '002': 'nook',
-      '003': 'worldmetro',
-      '004': 'biomi',
-      '005': 'bcs',
-      '006': 'bergamo',
-      '007': 'nutrizione',
-      '008': 'licalbe',
-      '009': 'studyflow',
-      '010': 'yeuxdesel'
-    };
-
     // Helper generatore Tag Media (Video vs Immagini)
     const getMediaTag = (img, pId) => {
-      // Mappatura dinamica delle cartelle per ogni progetto
       const folderMap = {
         '001': 'tonica', '002': 'nook', '003': 'worldmetro', '004': 'biomi', '005': 'bcs',
         '006': 'bergamo', '007': 'nutrizione', '008': 'licalbe', '009': 'studyflow', '010': 'yeuxdesel'
@@ -69,10 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (isVideo) {
         if (isSpecialVideo) {
-          // Video speciali: Loop/Muto di base, in hover abilita i controlli utente
+          // Video eccezionali: partono in loop muti. Hover: mostra i controlli nativi.
           return `<video src="${path}" autoplay loop muted playsinline onmouseenter="this.setAttribute('controls', 'true')" onmouseleave="this.removeAttribute('controls')"></video>`;
         } else {
-          // Video standard: sempre muto e senza controlli
+          // Video normali
           return `<video src="${path}" autoplay loop muted playsinline></video>`;
         }
       } else {
@@ -80,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // Carica dati
+    // Carica dati JSON
     Promise.all([
       fetch('data/projects.json').then(res => res.json()),
       fetch('data/projects_credits.json').then(res => res.json()),
@@ -94,8 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Imposta tema colore
       document.body.setAttribute('data-project', project.id);
-      
-      // Imposta titolo pagina ESATTAMENTE come richiesto
       document.title = project.name;
 
       // Popola intestazione
@@ -104,14 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('proj-year').innerHTML = project.year;
       document.getElementById('proj-caption').innerHTML = project.caption;
 
-      // Popola hero image (type == '00')
+      // Popola hero image
       const heroImg = projectImages.find(i => i.type === 0 || i.type === '00');
       const heroContainer = document.getElementById('proj-hero');
       if (heroImg) {
         heroContainer.innerHTML = getMediaTag(heroImg, projectId);
       }
 
-      // Popola galleria immagini (type '01' o '02')
+      // Popola galleria immagini
       const galleryImages = projectImages.filter(i => i.type !== 0 && i.type !== '00');
       const galleryContainer = document.getElementById('proj-gallery');
       
@@ -120,32 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryContainer.innerHTML += `<div class="gallery-item ${itemClass}">${getMediaTag(img, projectId)}</div>`;
       });
 
-      // Popola descrizione e credits
+      // Popola descrizione
       document.getElementById('proj-desc-text').innerHTML = project.description;
       
+      // Popola Credits
       if (projectCredits) {
         const creditsList = [
-          { key: 'course', label: 'COURSE' },
-          { key: 'client', label: 'CLIENT' },
+          { key: 'course', label: 'COURSE' }, { key: 'client', label: 'CLIENT' },
           { key: 'supervising_professor', label: 'SUPERVISING PROFESSOR' },
           { key: 'project_manager', label: 'PROJECT MANAGER' },
-          { key: 'project_team', label: 'PROJECT TEAM' },
-          { key: 'typefaces', label: 'TYPEFACES' }
+          { key: 'project_team', label: 'PROJECT TEAM' }, { key: 'typefaces', label: 'TYPEFACES' }
         ];
 
         const activeCredits = creditsList.filter(c => projectCredits[c.key] && projectCredits[c.key].trim() !== "");
         
-        let col1 = [];
-        let col2 = [];
-        
+        let col1 = [], col2 = [];
         if (activeCredits.length === 4) { col1 = activeCredits.slice(0, 2); col2 = activeCredits.slice(2, 4); }
         else if (activeCredits.length === 3) { col1 = activeCredits.slice(0, 2); col2 = activeCredits.slice(2, 3); }
         else if (activeCredits.length === 2) { col1 = activeCredits.slice(0, 1); col2 = activeCredits.slice(1, 2); }
         else if (activeCredits.length === 1) { col1 = activeCredits.slice(0, 1); }
         else {
            const half = Math.ceil(activeCredits.length / 2);
-           col1 = activeCredits.slice(0, half);
-           col2 = activeCredits.slice(half);
+           col1 = activeCredits.slice(0, half); col2 = activeCredits.slice(half);
         }
 
         const buildColHtml = (items) => items.map(c => `
@@ -159,20 +165,60 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('proj-credits-col2').innerHTML = buildColHtml(col2);
       }
 
-      // About Project Toggle Logic
+      // --- ABOUT PROJECT TOGGLE (Sequenza Fade-out / Fade-in) ---
       const aboutBtn = document.getElementById('btn-about-project');
-      
-      aboutBtn.addEventListener('click', () => {
-        body.classList.toggle('desc-open');
-      });
+      const galleryWrapper = document.querySelector('.proj-gallery-wrapper');
 
-      // --- SMART STICKY DESC PANEL (Stile Pentagram) ---
+      if (aboutBtn && galleryWrapper) {
+        let isToggling = false; // Flag intelligente, non rompe l'hover!
+        
+        aboutBtn.addEventListener('click', () => {
+          if (isToggling) return; // Se sta già sfumando, ignora il click
+          isToggling = true;
+
+          galleryWrapper.style.opacity = '0'; // Spegne la luce (fade out)
+
+          setTimeout(() => {
+            body.classList.toggle('desc-open'); // Cambia l'HTML al buio
+            
+            // Forza il browser a ricalcolare il layout prima di riaccendere
+            void galleryWrapper.offsetWidth; 
+            
+            galleryWrapper.style.opacity = '1'; // Riaccende la luce (fade in)
+            isToggling = false; // Sblocca il tasto
+          }, 300); // 300ms = --motion-normal
+        });
+        // --- HERO CLICK E SCOPERTA IMMAGINI (Fade su Scroll) ---
+      const heroContainer = document.getElementById('proj-hero');
+      if (heroContainer) {
+          heroContainer.addEventListener('click', () => {
+              // Cliccando la Hero, scorre dolcemente all'inizio della pagina info
+              const firstTitle = document.querySelector('.proj-info-wrapper');
+              if (firstTitle) firstTitle.scrollIntoView({behavior: 'smooth', block: 'start'});
+          });
+      }
+
+      // Observer per far comparire dolcemente le immagini della gallery
+      const projObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            projObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      
+      setTimeout(() => {
+        document.querySelectorAll('.gallery-item').forEach(el => projObserver.observe(el));
+      }, 300);
+      }
+
+      // --- SMART STICKY DESC PANEL (Solo su Desktop) ---
       const descPanel = document.querySelector('.proj-desc-panel');
       let lastScrollY_sticky = window.scrollY;
       let stickyTop = 24 * 4;
       
       window.addEventListener('scroll', () => {
-        // Applica solo se la descrizione è aperta e siamo su Desktop
         if (!body.classList.contains('desc-open') || window.innerWidth <= 768) return;
         if (!descPanel) return;
         
@@ -182,23 +228,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const panelHeight = descPanel.offsetHeight;
         const vh = window.innerHeight;
-        const headerOffset = 24 * 4; // 64px (16 baseline)
+        const headerOffset = 24 * 4; 
         
         if (panelHeight > vh - headerOffset) {
-          // Il testo è più alto dello schermo!
-          if (delta > 0) { // Scroll DOWN
-            // Il testo sale finché non tocca il fondo
+          if (delta > 0) { 
             stickyTop -= delta;
-            const minTop = vh - panelHeight - 32; // -32px margine di sicurezza inferiore
+            const minTop = vh - panelHeight - 32; 
             stickyTop = Math.max(stickyTop, minTop);
-          } else { // Scroll UP
-            // Il testo scende finché non tocca le 16 baseline
+          } else { 
             stickyTop -= delta;
             stickyTop = Math.min(stickyTop, headerOffset);
           }
           descPanel.style.top = `${stickyTop}px`;
         } else {
-          // Il testo è più corto dello schermo, sticky standard!
           descPanel.style.top = `${headerOffset}px`;
         }
       });
@@ -224,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="font-tester-controls">
                 ${isTonica ? `<select id="ft-weight" class="ft-select">${weightOptions}</select>` : `<div class="ft-static-weight">Regular</div>`}
                 <div class="ft-control"><label>Size</label><input type="range" id="ft-size" min="10" max="200" value="80"><span id="ft-size-val">80</span></div>
-                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="20" value="10"><span id="ft-leading-val">0</span></div>
+                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="20" value="10"><span id="ft-leading-val">10</span></div>
                 <div class="ft-control"><label>Spacing</label><input type="range" id="ft-spacing" min="-20" max="20" value="0"><span id="ft-spacing-val">0</span></div>
               </div>
               <textarea id="ft-textarea" class="ft-textarea" maxlength="100" spellcheck="false">The quick brown fox jumps over the lazy dog.</textarea>
@@ -242,10 +284,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ftArea.style.fontFamily = `'${fontName}', sans-serif`;
         
-        // Resize automatico perfetto (Azzera l'altezza per ricalcolarla in base al volume del nuovo testo)
+        // Resize automatico FLUIDO della Textarea
         const autoResize = () => {
-          ftArea.style.height = '0px'; 
-          ftArea.style.height = (ftArea.scrollHeight + 10) + 'px'; 
+          const currentHeight = ftArea.clientHeight; 
+          ftArea.style.height = 'auto'; 
+          const targetHeight = ftArea.scrollHeight; 
+          
+          ftArea.style.height = currentHeight + 'px'; 
+          
+          requestAnimationFrame(() => {
+            ftArea.style.height = targetHeight + 'px'; 
+          });
         };
 
         const updateFont = () => {
@@ -274,6 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
   // --- ABOUT PAGE LOGIC (Allineamento Etichette Matematico) ---
   if (document.querySelector('.about-bio')) {
     const alignAboutLabels = () => {
@@ -282,20 +332,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const labelBio = document.querySelector('.about-label-bio');
       
       if (bioTextObj && labelsWrapper && labelBio) {
-        // 1. Calcola l'altezza di tutto il testo bio + il gap di 12 baseline (48px)
         const targetTop = bioTextObj.offsetHeight + 48; 
-        
-        // 2. Calcola l'altezza dell'etichetta superiore (su mobile va a capo su 2 righe!)
         const labelBioHeight = labelBio.offsetHeight;
-        
-        // 3. Il margine di offset corretto è la differenza tra i due!
         const offset = targetTop - labelBioHeight;
-        
         labelsWrapper.style.setProperty('--social-offset', `${offset}px`);
       }
     };
 
     window.addEventListener('resize', alignAboutLabels);
-    setTimeout(alignAboutLabels, 200); // Ritardo per inizializzazione corretta dei font
+    setTimeout(alignAboutLabels, 200); 
   }
 });

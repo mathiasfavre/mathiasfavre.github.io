@@ -33,3 +33,18 @@ main {
   padding: 0 var(--grid-margin);
   margin: 0 auto;
 }
+
+/* ----------------------------------------
+   PAGE TRANSITIONS
+   ---------------------------------------- */
+main {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--motion-slow) var(--ease-interaction), 
+              transform var(--motion-slow) var(--ease-interaction);
+}
+
+body.page-loaded main {
+  opacity: 1;
+  transform: none; /* LA MAGIA È QUI: 'none' resetta il comportamento e salva i position:fixed interni! */
+}

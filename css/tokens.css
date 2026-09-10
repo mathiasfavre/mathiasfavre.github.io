@@ -85,6 +85,18 @@
   
   --header-margin-top: calc(var(--grid-baseline) * 6);  /* 36px */
   --footer-margin-bottom: calc(var(--grid-baseline) * 6);/* 36px */
+
+/* MOTION TOKENS */
+  --motion-fast: 150ms;
+  --motion-normal: 300ms;
+  --motion-slow: 600ms;
+  --motion-breath: 3000ms;
+  
+  --ease-interaction: cubic-bezier(0.2, 0.8, 0.2, 1); /* Movimento fisico ed elastico */
+  --ease-ambient: ease-in-out;
+  
+  --blur-mid: 4px;  /* Sfocatura leggera per MID focus */
+  --blur-far: 12px; /* Sfocatura forte per FAR focus */
 }
 
 /* BREAKPOINTS */

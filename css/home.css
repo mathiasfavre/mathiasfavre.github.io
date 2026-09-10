@@ -33,24 +33,53 @@
   border-radius: 50%;
   position: absolute;
   top: 0;
-  
-  filter: blur(8px);
-  backdrop-filter: blur(4px);
   cursor: pointer;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
+  
+  /* L'animazione base Breath per il movimento ambientale */
+  animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
+  
+  /* Transizioni di stato */
+  transition: filter var(--motion-normal) var(--ease-interaction),
+              background-color var(--motion-normal) var(--ease-interaction),
+              transform var(--motion-fast) var(--ease-interaction); /* Fast per seguire il mouse */
+}
+
+@keyframes breath {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08); }
 }
 
 .circle-left {
-  left: 0; /* Allineato all'estremo sinistro del gruppo */
-  /* Opacità aggiornata al 10% */
-  background-color: color-mix(in srgb, var(--color-alpine) 10%, transparent);
+  left: 0; 
+  background-color: color-mix(in srgb, var(--color-alpine) 15%, transparent);
+  filter: blur(8px);
 }
 
 .circle-right {
-  right: 0; /* Allineato all'estremo destro del gruppo */
-  /* Opacità aggiornata al 10% */
+  right: 0; 
+  background-color: color-mix(in srgb, var(--color-bordeaux) 15%, transparent);
+  filter: blur(8px);
+}
+
+/* LOGICA GAZE SU HOVER */
+.circles-wrapper:hover .circle-left {
+  filter: blur(var(--blur-far));
+  background-color: color-mix(in srgb, var(--color-alpine) 10%, transparent);
+}
+.circles-wrapper:hover .circle-right {
+  filter: blur(var(--blur-far));
   background-color: color-mix(in srgb, var(--color-bordeaux) 10%, transparent);
+}
+
+.circles-wrapper .circle-left:hover {
+  filter: blur(0); /* Mette a fuoco */
+  background-color: color-mix(in srgb, var(--color-alpine) 17%, transparent);
+  z-index: 5;
+}
+.circles-wrapper .circle-right:hover {
+  filter: blur(0); /* Mette a fuoco */
+  background-color: color-mix(in srgb, var(--color-bordeaux) 17%, transparent);
+  z-index: 5;
 }
 
 /* ----------------------------------------
