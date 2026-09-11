@@ -2,6 +2,11 @@
    ABOUT PAGE SPECIFIC STYLES
    ======================================== */
 
+/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .about-hero {
   margin-top: calc(var(--grid-baseline) * 20);
   position: relative;

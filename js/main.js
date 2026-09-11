@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             galleryWrapper.style.opacity = '1'; // Riaccende la luce (fade in)
             isToggling = false; // Sblocca il tasto
-          }, 300); // 300ms = --motion-normal
+          }, 200); // 300ms = --motion-normal
         });
         // --- HERO CLICK E SCOPERTA IMMAGINI (Fade su Scroll) ---
       const heroContainer = document.getElementById('proj-hero');

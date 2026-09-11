@@ -2,6 +2,11 @@
    WORK PAGE SPECIFIC STYLES
    ======================================== */
 
+/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .work-hero {
   margin-top: calc(var(--grid-baseline) * 20);
   position: relative;
@@ -123,14 +128,14 @@
               box-shadow var(--motion-normal) var(--ease-interaction);
 }
 
-/* QUANDO SI ENTRA NELLA GALLERIA: Tutti i progetti diventano MID/FAR */
-.work-gallery:hover .project-card {
+/* QUANDO SI ENTRA NELLA GALLERIA: Tutti i progetti diventano MID/FAR SOLO se sei su un'immagine */
+.work-gallery:has(.project-cover:hover) .project-card {
   filter: blur(var(--blur-mid));
   opacity: 0.5;
 }
 
-/* QUANDO SI PUNTA UN PROGETTO: Diventa FOCUS assoluto */
-.work-gallery .project-card:hover {
+/* QUANDO SI PUNTA UN'IMMAGINE: La sua intera card diventa FOCUS assoluto */
+.work-gallery .project-card:has(.project-cover:hover) {
   filter: blur(0);
   opacity: 1;
   z-index: 10;

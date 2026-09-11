@@ -2,6 +2,11 @@
    PROJECT PAGE SPECIFIC STYLES
    ======================================== */
 
+/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .page-project {
   /* Testo giustificato globale sulla pagina */
   text-align: justify;
@@ -195,11 +200,6 @@ body.desc-open .proj-desc-panel {
   transition: padding 0.3s ease, background-color 0.3s ease;
 }
 
-.btn-about-fixed:hover {
-  /* Aumenta l'opacità come invito alla lettura! */
-  background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
-}
-
 .btn-icon {
   display: flex;
   align-items: center;
@@ -211,10 +211,17 @@ body.desc-open .proj-desc-panel {
   transition: width 0.3s ease, opacity 0.3s ease, margin-right 0.3s ease;
 }
 
-.btn-about-fixed:hover .btn-icon {
-  width: 20px; 
-  opacity: 1;
-  margin-right: calc(var(--grid-baseline) * 2); 
+/* Sostituisci i vecchi blocchi :hover del bottone con questi: */
+@media (hover: hover) {
+  .btn-about-fixed:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  }
+  
+  .btn-about-fixed:hover .btn-icon {
+    width: 20px; 
+    opacity: 1;
+    margin-right: calc(var(--grid-baseline) * 2); 
+  }
 }
 
 .btn-icon span {
@@ -362,7 +369,8 @@ body.desc-open .btn-about-fixed .btn-icon span {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
+    bottom: 0;
     z-index: 80; 
     box-sizing: border-box; /* Impedisce strabordamenti laterali */
     background-color: var(--color-bg);

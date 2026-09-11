@@ -5,6 +5,12 @@
 /* ----------------------------------------
    A. HEADER & LOGO
    ---------------------------------------- */
+
+/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .site-header {
   position: fixed;
   top: 0;
@@ -79,17 +85,19 @@
               color var(--motion-normal) var(--ease-interaction);
 }
 
-/* Quando si passa sopra la lista, tutto sfoca in FAR */
-.header-nav:hover li a, .mobile-menu-nav:hover li a {
+/* Quando si punta un link, sfoca SOLO gli altri (quelli che NON sono in hover) */
+.header-nav:has(li a:hover) li a:not(:hover), 
+.mobile-menu-nav:has(li a:hover) li a:not(:hover) {
   filter: blur(var(--blur-mid));
   opacity: 0.5;
 }
 
-/* Il link puntato va in FOCUS */
-.header-nav li a:hover, .mobile-menu-nav li a:hover {
+/* Il link puntato va in FOCUS e cambia colore */
+.header-nav li a:hover, 
+.mobile-menu-nav li a:hover {
   filter: blur(0);
   opacity: 1;
-  color: var(--color-accent); /* Diventa Bordeaux */
+  color: var(--color-accent);
 }
 
 /* Offset per il body poiché l'header è fixed */

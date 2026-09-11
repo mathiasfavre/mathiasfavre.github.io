@@ -2,6 +2,11 @@
    1. DESIGN TOKENS (Variables & Fonts)
    ======================================== */
 
+/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* FONT FACES */
 @font-face {
   font-family: 'PP Lettra Mono';

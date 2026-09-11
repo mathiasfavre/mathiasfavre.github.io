@@ -202,14 +202,14 @@
        interno aumenta organicamente.
     */
     max-width: calc(var(--grid-baseline) * 120);
-    height: calc(var(--grid-baseline) * 72); 
+    height: calc(var(--grid-baseline) * 64); 
     margin: 0 auto;
     margin-bottom: calc(var(--grid-baseline) * 12);
   }
   
   .home-circle {
-    width: calc(var(--grid-baseline) * 72);
-    height: calc(var(--grid-baseline) * 72);
+    width: calc(var(--grid-baseline) * 64);
+    height: calc(var(--grid-baseline) * 64);
   }
   
   .home-titles-wrapper {
