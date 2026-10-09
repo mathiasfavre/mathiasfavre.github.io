@@ -7,10 +7,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const header = document.querySelector('.site-header');
   const menuToggle = document.querySelector('.menu-toggle');
 
-  // Trigger Page Transition (Fade-in iniziale)
+  /* ========================================
+     1. GLOBAL UI & FIXES
+     ======================================== */
+     
+  // --- PAGE TRANSITION ---
   setTimeout(() => body.classList.add('page-loaded'), 50);
 
-  // 1. Header Scroll Logic
+  // --- HEADER SCROLL LOGIC ---
   let lastScrollY = window.scrollY;
   window.addEventListener('scroll', () => {
     if (body.classList.contains('menu-open')) return;
@@ -22,23 +26,65 @@ document.addEventListener('DOMContentLoaded', () => {
     lastScrollY = window.scrollY;
   });
 
-  // 2. Toggle Hamburger Menu (Mobile)
+  // --- HAMBURGER MENU ---
   if (menuToggle) {
     menuToggle.addEventListener('click', () => {
       body.classList.toggle('menu-open');
     });
   }
 
-  // Chiudi il menu premendo ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && body.classList.contains('menu-open')) {
       body.classList.remove('menu-open');
     }
   });
 
-  // --- HOME CIRCLES MOUSE FOLLOW ---
+  // --- FIX SAFARI: VIDEO AUTOPLAY & LOW POWER MODE ---
+  const enforceVideoAutoplay = () => {
+    const videos = document.querySelectorAll('video');
+    videos.forEach(video => {
+      video.muted = true;
+      video.playsInline = true;
+      video.autoplay = true;
+      video.loop = true;
+      
+      // I video decorativi non devono mostrare controlli
+      if (!video.hasAttribute('onmouseenter')) {
+        video.removeAttribute('controls');
+      }
+      
+      let playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          video.classList.add('low-power-blocked');
+        });
+      }
+    });
+  };
+
+  // Esegue il fix all'avvio e se l'utente torna indietro (bfcache)
+  setTimeout(enforceVideoAutoplay, 300);
+  window.addEventListener('pageshow', enforceVideoAutoplay);
+
+  // Risveglio magico: fa partire i video incastrati al primo tocco
+  const wakeUpVideos = () => {
+    const blockedVideos = document.querySelectorAll('video.low-power-blocked');
+    blockedVideos.forEach(video => {
+      video.play().then(() => {
+        video.classList.remove('low-power-blocked');
+      }).catch(() => {}); 
+    });
+  };
+
+  document.body.addEventListener('click', wakeUpVideos, { once: true });
+  document.body.addEventListener('touchstart', wakeUpVideos, { once: true });
+
+  /* ========================================
+     2. PAGE LOGIC: HOME
+     ======================================== */
   const homeCircles = document.querySelectorAll('.home-circle');
   if (homeCircles.length > 0) {
+    // Effetto Parallasse Gaze
     homeCircles.forEach(circle => {
       circle.addEventListener('mousemove', (e) => {
         const rect = circle.getBoundingClientRect();
@@ -54,37 +100,109 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- CLICK CIRCLES TO SCROLL ---
+  // Scroll sui click dei cerchi
   const aboutCircle = document.querySelector('.about-circle');
   const workCircle = document.querySelector('.work-circle');
-  if (aboutCircle) aboutCircle.addEventListener('click', () => document.querySelector('.about-intro').scrollIntoView({behavior: 'smooth'}));
-  if (workCircle) workCircle.addEventListener('click', () => document.querySelector('.work-about').scrollIntoView({behavior: 'smooth'}));
+  if (aboutCircle && document.querySelector('.about-intro')) {
+      aboutCircle.addEventListener('click', () => document.querySelector('.about-intro').scrollIntoView({behavior: 'smooth'}));
+  }
+  if (workCircle && document.querySelector('.work-about')) {
+      workCircle.addEventListener('click', () => document.querySelector('.work-about').scrollIntoView({behavior: 'smooth'}));
+  }
 
-  // 3. PROJECT PAGE LOGIC
+  /* ========================================
+     3. PAGE LOGIC: ABOUT
+     ======================================== */
+  if (document.querySelector('.about-bio')) {
+    const alignAboutLabels = () => {
+      const bioTextObj = document.querySelector('.bio-text');
+      const labelsWrapper = document.querySelector('.about-labels-wrapper');
+      const labelBio = document.querySelector('.about-label-bio');
+      
+      if (bioTextObj && labelsWrapper && labelBio) {
+        const targetTop = bioTextObj.offsetHeight + 48; 
+        const labelBioHeight = labelBio.offsetHeight;
+        const offset = targetTop - labelBioHeight;
+        labelsWrapper.style.setProperty('--social-offset', `${offset}px`);
+      }
+    };
+
+    window.addEventListener('resize', alignAboutLabels);
+    setTimeout(alignAboutLabels, 200); 
+  }
+
+  /* ========================================
+     4. PAGE LOGIC: WORK GALLERY
+     ======================================== */
+  const workGallery = document.querySelector('.work-gallery');
+  
+  if (workGallery && !document.body.classList.contains('page-project')) {
+    fetch('data/projects.json')
+      .then(res => res.json())
+      .then(projects => {
+        workGallery.innerHTML = ''; 
+
+        // Ordina i progetti
+        projects.sort((a, b) => a.gallery_order - b.gallery_order);
+
+        projects.forEach(project => {
+          const isVideo = project.cover.match(/\.(webm|mp4)$/i);
+          const mediaTag = isVideo 
+            ? `<video src="assets/images/covers/${project.cover}" autoplay loop muted playsinline></video>` 
+            : `<img src="assets/images/covers/${project.cover}" alt="${project.name}">`;
+
+          const cardHtml = `
+            <a href="project.html?id=${project.id}" class="project-card">
+              <div class="project-cover">
+                ${mediaTag}
+                <div class="project-hover-tag type-data">${project.class} / ${project.year}</div>
+              </div>
+              <div class="project-info">
+                <p class="project-text type-body">
+                  ${project.name}<br>
+                  <span class="project-caption">${project.caption}</span>
+                </p>
+              </div>
+            </a>
+          `;
+          workGallery.insertAdjacentHTML('beforeend', cardHtml);
+        });
+        
+        // Aggiorna contatore
+        const countEl = document.querySelector('.work-projects-count');
+        if (countEl) countEl.innerText = `${projects.length} PROJECTS`;
+        
+        // Risveglia i video appena iniettati per Safari
+        enforceVideoAutoplay();
+      })
+      .catch(err => console.error('Errore nel caricamento della galleria:', err));
+  }
+
+  /* ========================================
+     5. PAGE LOGIC: PROJECT DETAIL
+     ======================================== */
   const urlParams = new URLSearchParams(window.location.search);
   const projectId = urlParams.get('id');
 
   if (document.body.classList.contains('page-project') && projectId) {
     
-    // Helper generatore Tag Media (Video vs Immagini)
+    // --- Helper Generatore Media ---
     const getMediaTag = (img, pId) => {
       const folderMap = {
         '001': 'tonica', '002': 'nook', '003': 'worldmetro', '004': 'biomi', '005': 'bcs',
-        '006': 'bergamo', '007': 'nutrizione', '008': 'licalbe', '009': 'studyflow', '010': 'yeuxdesel'
+        '006': 'bergamo', '007': 'nutrizione', '008': 'licalbe', '009': 'studyflow'
       };
       
       const folder = folderMap[pId] || 'covers';
       const path = `assets/images/${folder}/${img.filename}`;
-      
       const isVideo = img.filename.match(/\.(webm|mp4)$/i);
-      const isSpecialVideo = img.filename.match(/(bcs20|ls17|nook13|tonica11)\.(webm|mp4)$/i);
+      // Regex per i video che devono mostrare i controlli in hover
+      const isSpecialVideo = img.filename.match(/(bcs20|bcs21|ls17|nook13|tonica11|ber12)\.(webm|mp4)$/i);
 
       if (isVideo) {
         if (isSpecialVideo) {
-          // Video eccezionali: partono in loop muti. Hover: mostra i controlli nativi.
           return `<video src="${path}" autoplay loop muted playsinline onmouseenter="this.setAttribute('controls', 'true')" onmouseleave="this.removeAttribute('controls')"></video>`;
         } else {
-          // Video normali
           return `<video src="${path}" autoplay loop muted playsinline></video>`;
         }
       } else {
@@ -92,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
 
-    // Carica dati JSON
+    // --- Fetch & Popola Dati JSON ---
     Promise.all([
       fetch('data/projects.json').then(res => res.json()),
       fetch('data/projects_credits.json').then(res => res.json()),
@@ -104,36 +222,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!project) return;
 
-      // Imposta tema colore
+      // Theme & Header Info
       document.body.setAttribute('data-project', project.id);
       document.title = project.name;
-
-      // Popola intestazione
       document.getElementById('proj-name').innerHTML = project.name;
       document.getElementById('proj-class').innerHTML = project.class;
       document.getElementById('proj-year').innerHTML = project.year;
       document.getElementById('proj-caption').innerHTML = project.caption;
 
-      // Popola hero image
+      // Hero Image
       const heroImg = projectImages.find(i => i.type === 0 || i.type === '00');
-      const heroContainer = document.getElementById('proj-hero');
-      if (heroImg) {
-        heroContainer.innerHTML = getMediaTag(heroImg, projectId);
-      }
+      if (heroImg) document.getElementById('proj-hero').innerHTML = getMediaTag(heroImg, projectId);
 
-      // Popola galleria immagini
+      // Gallery Images
       const galleryImages = projectImages.filter(i => i.type !== 0 && i.type !== '00');
       const galleryContainer = document.getElementById('proj-gallery');
-      
       galleryImages.forEach(img => {
         const itemClass = img.type == 1 || img.type == '01' ? 'img-01' : 'img-02';
         galleryContainer.innerHTML += `<div class="gallery-item ${itemClass}">${getMediaTag(img, projectId)}</div>`;
       });
 
-      // Popola descrizione
+      // Description & Credits
       document.getElementById('proj-desc-text').innerHTML = project.description;
-      
-      // Popola Credits
       if (projectCredits) {
         const creditsList = [
           { key: 'course', label: 'COURSE' }, { key: 'client', label: 'CLIENT' },
@@ -165,40 +275,36 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('proj-credits-col2').innerHTML = buildColHtml(col2);
       }
 
-      // --- ABOUT PROJECT TOGGLE (Sequenza Fade-out / Fade-in) ---
+      enforceVideoAutoplay(); // Applica i fix Safari ai nuovi video inseriti
+
+      // --- Toggle About Button ---
       const aboutBtn = document.getElementById('btn-about-project');
       const galleryWrapper = document.querySelector('.proj-gallery-wrapper');
-
       if (aboutBtn && galleryWrapper) {
-        let isToggling = false; // Flag intelligente, non rompe l'hover!
-        
+        let isToggling = false; 
         aboutBtn.addEventListener('click', () => {
-          if (isToggling) return; // Se sta già sfumando, ignora il click
+          if (isToggling) return; 
           isToggling = true;
-
-          galleryWrapper.style.opacity = '0'; // Spegne la luce (fade out)
-
+          galleryWrapper.style.opacity = '0'; 
           setTimeout(() => {
-            body.classList.toggle('desc-open'); // Cambia l'HTML al buio
-            
-            // Forza il browser a ricalcolare il layout prima di riaccendere
+            body.classList.toggle('desc-open'); 
             void galleryWrapper.offsetWidth; 
-            
-            galleryWrapper.style.opacity = '1'; // Riaccende la luce (fade in)
-            isToggling = false; // Sblocca il tasto
-          }, 200); // 300ms = --motion-normal
+            galleryWrapper.style.opacity = '1'; 
+            isToggling = false; 
+          }, 200); 
         });
-        // --- HERO CLICK E SCOPERTA IMMAGINI (Fade su Scroll) ---
+      }
+
+      // --- Hero Click to Scroll ---
       const heroContainer = document.getElementById('proj-hero');
       if (heroContainer) {
           heroContainer.addEventListener('click', () => {
-              // Cliccando la Hero, scorre dolcemente all'inizio della pagina info
               const firstTitle = document.querySelector('.proj-info-wrapper');
               if (firstTitle) firstTitle.scrollIntoView({behavior: 'smooth', block: 'start'});
           });
       }
 
-      // Observer per far comparire dolcemente le immagini della gallery
+      // --- Intersection Observer (Fade-in Immagini) ---
       const projObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -207,16 +313,14 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         });
       }, { threshold: 0.1 });
-      
       setTimeout(() => {
         document.querySelectorAll('.gallery-item').forEach(el => projObserver.observe(el));
       }, 300);
-      }
 
-      // --- SMART STICKY DESC PANEL (Solo su Desktop) ---
+      // --- Sticky Panel Math (Desktop Only) ---
       const descPanel = document.querySelector('.proj-desc-panel');
       let lastScrollY_sticky = window.scrollY;
-      let stickyTop = 24 * 4;
+      let stickyTop = 24 * 4; // 96px
       
       window.addEventListener('scroll', () => {
         if (!body.classList.contains('desc-open') || window.innerWidth <= 768) return;
@@ -245,8 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-
-      // --- LOGICA FONT TESTER (Tonica & Bergamo) ---
+      // --- FONT TESTER (Tonica & Bergamo) ---
       if (projectId === '001' || projectId === '006') {
         const isTonica = projectId === '001';
         const fontName = isTonica ? 'Tonica' : 'BergamoDisplay';
@@ -284,19 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ftArea.style.fontFamily = `'${fontName}', sans-serif`;
         
-        // Resize automatico FLUIDO della Textarea
-        const autoResize = () => {
-          const currentHeight = ftArea.clientHeight; 
-          ftArea.style.height = 'auto'; 
-          const targetHeight = ftArea.scrollHeight; 
-          
-          ftArea.style.height = currentHeight + 'px'; 
-          
-          requestAnimationFrame(() => {
-            ftArea.style.height = targetHeight + 'px'; 
-          });
-        };
-
         const updateFont = () => {
           if(selWeight) ftArea.style.fontWeight = selWeight.value === 'Bold' ? 700 : (selWeight.value === 'Light' ? 300 : 400);
           ftArea.style.fontSize = `${inpSize.value}px`;
@@ -306,40 +396,37 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('ft-size-val').innerText = inpSize.value;
           document.getElementById('ft-leading-val').innerText = inpLead.value;
           document.getElementById('ft-spacing-val').innerText = inpSpace.value;
-          autoResize();
         };
 
-        [inpSize, inpLead, inpSpace].forEach(inp => inp.addEventListener('input', updateFont));
-        if(selWeight) selWeight.addEventListener('change', updateFont);
+        const instantResize = () => {
+          ftArea.style.transition = 'none'; 
+          ftArea.style.height = 'auto';
+          ftArea.style.height = ftArea.scrollHeight + 'px'; 
+          requestAnimationFrame(() => {
+            ftArea.style.transition = 'height var(--motion-normal) var(--ease-interaction), font-size 0.2s ease, letter-spacing 0.2s ease, line-height 0.2s ease';
+          });
+        };
+
+        [inpSize, inpLead, inpSpace].forEach(inp => inp.addEventListener('input', () => { updateFont(); instantResize(); }));
+        if(selWeight) selWeight.addEventListener('change', () => { updateFont(); instantResize(); });
         
         ftArea.addEventListener('input', () => {
             if(ftArea.value.length > 100) ftArea.value = ftArea.value.substring(0, 100);
-            autoResize();
+            instantResize();
         });
-        window.addEventListener('resize', autoResize);
+        window.addEventListener('resize', instantResize);
         
-        setTimeout(updateFont, 100); 
-        setTimeout(autoResize, 500); 
+        if (document.fonts) {
+          document.fonts.ready.then(() => {
+            updateFont();
+            instantResize(); 
+            setTimeout(instantResize, 300); 
+          });
+        } else {
+          setTimeout(updateFont, 100); 
+          setTimeout(instantResize, 500);
+        }
       }
     });
-  }
-
-  // --- ABOUT PAGE LOGIC (Allineamento Etichette Matematico) ---
-  if (document.querySelector('.about-bio')) {
-    const alignAboutLabels = () => {
-      const bioTextObj = document.querySelector('.bio-text');
-      const labelsWrapper = document.querySelector('.about-labels-wrapper');
-      const labelBio = document.querySelector('.about-label-bio');
-      
-      if (bioTextObj && labelsWrapper && labelBio) {
-        const targetTop = bioTextObj.offsetHeight + 48; 
-        const labelBioHeight = labelBio.offsetHeight;
-        const offset = targetTop - labelBioHeight;
-        labelsWrapper.style.setProperty('--social-offset', `${offset}px`);
-      }
-    };
-
-    window.addEventListener('resize', alignAboutLabels);
-    setTimeout(alignAboutLabels, 200); 
   }
 });

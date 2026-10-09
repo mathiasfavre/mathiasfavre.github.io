@@ -462,8 +462,15 @@
     "alt":"bcs trailer"
   },
   {
+    "id":"005",
+    "filename":"bcs21.webm",
+    "type":1,
+    "order":18,
+    "alt":"bcs brand manual"
+  },
+  {
     "id":"006",
-    "filename":"ber00.svg",
+    "filename":"ber00.webp",
     "type":0,
     "order":1,
     "alt":"bergamo"
@@ -498,14 +505,14 @@
   },
   {
     "id":"006",
-    "filename":"ber05.svg",
+    "filename":"ber05.webp",
     "type":1,
     "order":6,
     "alt":"esempi grandezze"
   },
   {
     "id":"006",
-    "filename":"ber06.svg",
+    "filename":"ber06.webp",
     "type":2,
     "order":7,
     "alt":"esempio maiuscolo"
@@ -519,7 +526,7 @@
   },
   {
     "id":"006",
-    "filename":"ber09.svg",
+    "filename":"ber09.webp",
     "type":2,
     "order":9,
     "alt":"esempio frase"
@@ -537,6 +544,13 @@
     "type":1,
     "order":11,
     "alt":"alfabeto"
+  },
+  {
+    "id":"006",
+    "filename":"ber12.webm",
+    "type":1,
+    "order":12,
+    "alt":"slideshow bergamo"
   },
   {
     "id":"007",

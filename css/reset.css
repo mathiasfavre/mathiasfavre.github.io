@@ -1,6 +1,7 @@
 /* ========================================
-   2. RESET
+   RESET
    ======================================== */
+
 * {
   box-sizing: border-box;
 }
@@ -22,4 +23,9 @@ button, input, textarea, select {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* FIX SAFARI: Rimuove il riquadro grigio di default su iOS al tap (Globale) */
+a, button, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
 }

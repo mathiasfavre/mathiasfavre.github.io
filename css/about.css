@@ -2,20 +2,15 @@
    ABOUT PAGE SPECIFIC STYLES
    ======================================== */
 
-/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
-a, button, input, select, textarea {
-  -webkit-tap-highlight-color: transparent;
-}
-
+/* ----------------------------------------
+   A. HERO & CIRCLE
+   ---------------------------------------- */
 .about-hero {
   margin-top: calc(var(--grid-baseline) * 20);
   position: relative;
   align-items: center; 
 }
 
-/* ----------------------------------------
-   CERCHIO DESKTOP & MOBILE (Centrato con i titoli)
-   ---------------------------------------- */
 .about-circle-wrapper {
   grid-column: 1 / -1;
   grid-row: 1;
@@ -23,7 +18,6 @@ a, button, input, select, textarea {
   justify-content: center;
   align-items: center;
   position: relative;
-  
   height: calc(var(--grid-baseline) * 96);
   z-index: 2;
   pointer-events: none;
@@ -33,22 +27,23 @@ a, button, input, select, textarea {
   width: calc(var(--grid-baseline) * 96);
   height: calc(var(--grid-baseline) * 96);
   border-radius: 50%;
-  
-  /* Colore bordeaux per About */
   background-color: color-mix(in srgb, var(--color-accent) 15%, transparent);
   filter: blur(70px);
-
   cursor: pointer;
   pointer-events: auto;
   animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
   transition: filter var(--motion-normal) var(--ease-interaction);
-}
-.about-circle:hover, .work-circle:hover {
-  filter: blur(20px); /* Diventa leggermente più nitido/presente */
+  
+  /* FIX SAFARI BUG: Forza l'uso della GPU */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: filter, transform;
 }
 
+.about-circle:hover { filter: blur(20px); }
+
 /* ----------------------------------------
-   TITOLI ABOUT
+   B. TITLES
    ---------------------------------------- */
 .about-titles-wrapper {
   grid-column: 1 / -1;
@@ -61,25 +56,20 @@ a, button, input, select, textarea {
   z-index: 10;
 }
 
-.about-title {
-  margin: 0;
-}
-
-.desktop-br {
-  display: inline;
-}
+.about-title { margin: 0; }
+.desktop-br { display: inline; }
 
 /* ----------------------------------------
-   INTRO SECTION & COORDINATES
+   C. INTRO SECTION & COORDINATES
    ---------------------------------------- */
 .about-intro {
   margin-top: calc(var(--grid-baseline) * 12);
   margin-bottom: calc(var(--grid-baseline) * 24);
-  align-items: start; /* Cambiato: partiamo ad allineare dall'alto! */
+  align-items: start; 
 }
 
 .about-intro-text, .about-coord-text {
-  grid-row: 1; /* Devono rigorosamente stare nella stessa riga grid */
+  grid-row: 1; 
 }
 
 .about-intro-text {
@@ -99,25 +89,22 @@ a, button, input, select, textarea {
 .about-coord-text {
   grid-column: 9 / 13;
   text-align: left;
-  /* La magia: lo spingiamo giù di 1 esatta line-height per allinearlo alla seconda riga! */
   margin-top: var(--type-body-lh); 
   margin-bottom: 0; 
 }
 
 /* ----------------------------------------
-   BIO & IMAGE SECTION
+   D. BIO & IMAGE SECTION
    ---------------------------------------- */
 .about-bio {
   margin-bottom: calc(var(--grid-baseline) * 16);
-  /* Subgrid alignment rule */
   align-items: start;
 }
 
-/* 1. Immagine Video */
 .about-video-wrapper {
   grid-column: 1 / 5;
   width: 100%;
-  aspect-ratio: 3 / 4; /* Approssimativo per un ritratto verticale */
+  aspect-ratio: 3 / 4; 
   background-color: color-mix(in srgb, var(--color-text) 5%, transparent);
 }
 
@@ -128,7 +115,6 @@ a, button, input, select, textarea {
   display: block;
 }
 
-/* 2. Etichette laterali */
 .about-labels-wrapper {
   grid-column: 5 / 9;
   display: flex;
@@ -142,12 +128,8 @@ a, button, input, select, textarea {
   color: var(--color-accent);
 }
 
-/* L'etichetta bio è allineata in cima */
-.about-label-bio {
-  margin-top: 0;
-}
+.about-label-bio { margin-top: 0; }
 
-/* 3. Testo Descrittivo e Link */
 .about-text-wrapper {
   grid-column: 9 / 13;
   display: flex;
@@ -155,15 +137,9 @@ a, button, input, select, textarea {
   text-align: justify;
 }
 
-.bio-text p {
-  margin: 0 0 calc(var(--grid-baseline) * 4) 0;
-}
+.bio-text p { margin: 0 0 calc(var(--grid-baseline) * 4) 0; }
+.bio-text p:last-child { margin-bottom: 0; }
 
-.bio-text p:last-child {
-  margin-bottom: 0;
-}
-
-/* Distanza tra bio e social: 12 baseline */
 .social-links {
   margin-top: calc(var(--grid-baseline) * 12);
   display: flex;
@@ -177,32 +153,20 @@ a, button, input, select, textarea {
   transition: opacity 0.2s ease;
 }
 
-.social-links a:hover {
-  opacity: 0.6;
-}
+.social-links a:hover { opacity: 0.6; }
 
-/* Magia per allineare l'etichetta social con la lista dei link social.
-   Utilizziamo l'altezza calcolata della bio per spingere l'etichetta giù */
+/* Dynamic Offset for Social Label */
 .about-bio:has(.social-links) .about-label-social {
-  /* Questo padding-top deve essere uguale all'altezza del testo bio + il gap di 12 baseline. 
-     Poiché CSS puro non può leggere l'altezza dinamica di un fratello in grid, 
-     usiamo JavaScript nel main.js per calcolare questo offset e passarlo come variabile CSS */
   margin-top: var(--social-offset, auto); 
 }
 
 /* ----------------------------------------
-   MOBILE OVERRIDES
+   E. MOBILE OVERRIDES
    ---------------------------------------- */
 @media (max-width: 768px) {
+  .about-hero { display: grid; }
   
-  .about-hero {
-    display: grid;
-  }
-  
-  /* Cerchio Mobile: 72 Baseline */
-  .about-circle-wrapper {
-    height: calc(var(--grid-baseline) * 72);
-  }
+  .about-circle-wrapper { height: calc(var(--grid-baseline) * 72); }
   
   .about-circle {
     width: calc(var(--grid-baseline) * 72);
@@ -210,51 +174,31 @@ a, button, input, select, textarea {
     filter: blur(50px);
   }
   
-  /* Titoli Mobile */
-  .about-titles-wrapper {
-    grid-column: 1 / -1;
-  }
-  
-  .desktop-br {
-    display: none; /* Rimuovi a-capo forzato su mobile */
-  }
+  .about-titles-wrapper { grid-column: 1 / -1; }
+  .desktop-br { display: none; }
 
-  /* Intro Section Mobile */
   .about-intro {
     margin-top: calc(var(--grid-baseline) * 12); 
-    align-items: start; /* Confermiamo l'allineamento dall'alto */
-    row-gap: 0; /* Rimuoviamo eventuali gap spuri */
+    align-items: start; 
+    row-gap: 0; 
   }
   
-  .about-intro-text, .about-coord-text {
-    grid-row: 1; /* Devono condividere la stessa riga affiancati */
-  }
-
-  .about-intro-text {
-    grid-column: 1 / 3; 
-  }
+  .about-intro-text, .about-coord-text { grid-row: 1; }
+  .about-intro-text { grid-column: 1 / 3; }
   
   .about-coord-text {
     grid-column: 3 / 5;
     text-align: left;
-    /* margin-top lo eredita dal desktop, ed è perfetto! */
     margin-bottom: 0;
   }
 
-  /* Bio & Image Section Mobile */
-  .about-bio {
-    /* Muta da Grid a Flex colonna per gestire l'ordine facilmente,
-       o mantieni grid riordinando le righe */
-    row-gap: calc(var(--grid-baseline) * 16);
-  }
+  .about-bio { row-gap: calc(var(--grid-baseline) * 16); }
   
-  /* Testi descrittivi vanno in alto (Riga 1) */
   .about-text-wrapper {
     grid-column: 2 / 5;
     grid-row: 1;
   }
   
-  /* Etichette vanno a sinistra (Riga 1) */
   .about-labels-wrapper {
     grid-column: 1 / 2;
     grid-row: 1;
@@ -263,11 +207,8 @@ a, button, input, select, textarea {
   .about-label-bio, .about-label-social {
     text-align: right;
     font-weight: 500;
-    /* Rimuovi offset dinamico e usa margine manuale per allineare al primo paragrafo 
-       (Bio è su, Social è spinto giù dalla JS var o lo lasciamo gestire dal JS in mobile) */
   }
 
-  /* Video va in basso (Riga 2) */
   .about-video-wrapper {
     grid-column: 2 / 5;
     grid-row: 2;

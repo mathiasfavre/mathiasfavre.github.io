@@ -2,20 +2,15 @@
    WORK PAGE SPECIFIC STYLES
    ======================================== */
 
-/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
-a, button, input, select, textarea {
-  -webkit-tap-highlight-color: transparent;
-}
-
+/* ----------------------------------------
+   A. HERO & CIRCLE
+   ---------------------------------------- */
 .work-hero {
   margin-top: calc(var(--grid-baseline) * 20);
   position: relative;
   align-items: center; 
 }
 
-/* ----------------------------------------
-   CERCHIO DESKTOP & MOBILE (Centrato con i titoli)
-   ---------------------------------------- */
 .work-circle-wrapper {
   grid-column: 1 / -1;
   grid-row: 1;
@@ -23,7 +18,6 @@ a, button, input, select, textarea {
   justify-content: center;
   align-items: center;
   position: relative;
-  
   height: calc(var(--grid-baseline) * 96);
   z-index: 2;
   pointer-events: none;
@@ -35,18 +29,21 @@ a, button, input, select, textarea {
   border-radius: 50%;
   background-color: color-mix(in srgb, var(--color-alpine) 15%, transparent);
   filter: blur(70px);
-
   cursor: pointer;
   pointer-events: auto;
   animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
   transition: filter var(--motion-normal) var(--ease-interaction);
-}
-.about-circle:hover, .work-circle:hover {
-  filter: blur(20px); /* Diventa leggermente più nitido/presente */
+  
+  /* FIX SAFARI BUG: Forza l'uso della GPU */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: filter, transform;
 }
 
+.work-circle:hover { filter: blur(20px); }
+
 /* ----------------------------------------
-   TITOLI WORK
+   B. TITLES
    ---------------------------------------- */
 .work-titles-wrapper {
   grid-column: 1 / -1;
@@ -54,7 +51,7 @@ a, button, input, select, textarea {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   column-gap: var(--grid-gutter);
-  align-items: center; /* Centrati sul cerchio */
+  align-items: center; 
   pointer-events: none;
   z-index: 10;
 }
@@ -70,11 +67,11 @@ a, button, input, select, textarea {
 }
 
 /* ----------------------------------------
-   ABOUT TEASER SECTION & PROJECTS COUNT
+   C. ABOUT TEASER & COUNTER
    ---------------------------------------- */
 .work-about {
   margin-top: calc(var(--grid-baseline) * 12);
-  margin-bottom: calc(var(--grid-baseline) * 24); /* Distanza dalla galleria */
+  margin-bottom: calc(var(--grid-baseline) * 24); 
   align-items: end;
 }
 
@@ -100,7 +97,7 @@ a, button, input, select, textarea {
 }
 
 /* ----------------------------------------
-   GALLERY GRID
+   D. GALLERY GRID & PROJECT CARDS
    ---------------------------------------- */
 .work-gallery {
   grid-column: 1 / -1;
@@ -118,7 +115,6 @@ a, button, input, select, textarea {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
-  /* Riposo (tutto normale) */
   filter: blur(0);
   opacity: 1;
   transform: translateY(0);
@@ -128,13 +124,12 @@ a, button, input, select, textarea {
               box-shadow var(--motion-normal) var(--ease-interaction);
 }
 
-/* QUANDO SI ENTRA NELLA GALLERIA: Tutti i progetti diventano MID/FAR SOLO se sei su un'immagine */
+/* Hover Blur Focus Logic */
 .work-gallery:has(.project-cover:hover) .project-card {
   filter: blur(var(--blur-mid));
   opacity: 0.5;
 }
 
-/* QUANDO SI PUNTA UN'IMMAGINE: La sua intera card diventa FOCUS assoluto */
 .work-gallery .project-card:has(.project-cover:hover) {
   filter: blur(0);
   opacity: 1;
@@ -146,28 +141,37 @@ a, button, input, select, textarea {
   aspect-ratio: 4 / 3;
   position: relative;
   overflow: hidden;
-  border-radius: calc(var(--grid-baseline) * 2); /* Leggermente stondata per accogliere l'ombra */
+  border-radius: calc(var(--grid-baseline) * 2); 
+  
+  /* FIX SAFARI BUG: Maschera video nei bordi curvi */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
 }
 
-/* Aggiunto il supporto ai video (webm/mp4) per la cover */
 .project-cover img, .project-cover video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center; 
   display: block;
+  /* FIX SAFARI BUG: Evita traslazioni bfcache */
+  transform: translate3d(0, 0, 0) scale(1);
+  -webkit-transform: translate3d(0, 0, 0) scale(1);
   transition: transform var(--motion-normal) var(--ease-interaction);
 }
 
 .project-card:hover .project-cover img, 
 .project-card:hover .project-cover video {
-  /* Drop shadow chiaro colore alpine come richiesto */
-  transform: scale(1.03);
+  transform: translate3d(0, 0, 0) scale(1.03);
+  -webkit-transform: translate3d(0, 0, 0) scale(1.03);
 }
 
 .project-card:hover .project-cover {
   box-shadow: 0 0 calc(var(--grid-baseline) * 3) calc(var(--grid-baseline) * 1) color-mix(in srgb, var(--color-alpine) 8%, transparent);
 }
 
+/* Hover Tag */
 .project-hover-tag {
   position: absolute;
   bottom: calc(var(--grid-baseline) * 3);
@@ -188,37 +192,25 @@ a, button, input, select, textarea {
 
 .project-card:hover .project-hover-tag {
   opacity: 1;
-  transform: translateX(-50%) translateY(0); /* Raggiunge la posizione finale fluidamente */
+  transform: translateX(-50%) translateY(0); 
 }
 
-.project-info {
-  margin-top: calc(var(--grid-baseline) * 4);
-}
-
-.project-text {
-  margin: 0;
-}
-
-.project-caption {
-  color: var(--color-cloud);
-}
+/* Text Info */
+.project-info { margin-top: calc(var(--grid-baseline) * 4); }
+.project-text { margin: 0; }
+.project-caption { color: var(--color-cloud); }
 
 /* ----------------------------------------
-   MOBILE OVERRIDES
+   E. MOBILE & TABLET OVERRIDES
    ---------------------------------------- */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .project-card { grid-column: span 6; }
+}
+
 @media (max-width: 768px) {
+  .work-hero { display: grid; }
   
-  /* L'Hero DEVE rimanere Grid su mobile affinchè cerchio e testi si sovrappongano 
-     nella stessa cella (grid-row: 1) e si allineino al centro. */
-  .work-hero {
-    display: grid;
-    /* La distanza tra cerchio/titolo centrati e blocco testo: 12 baseline */
-  }
-  
-  /* Cerchio Mobile: 72 Baseline */
-  .work-circle-wrapper {
-    height: calc(var(--grid-baseline) * 72);
-  }
+  .work-circle-wrapper { height: calc(var(--grid-baseline) * 72); }
   
   .work-circle {
     width: calc(var(--grid-baseline) * 72);
@@ -226,45 +218,14 @@ a, button, input, select, textarea {
     filter: blur(50px);
   }
   
-  /* Titoli centrati al cerchio, ai margini */
-  .work-titles-wrapper {
-    grid-template-columns: repeat(var(--grid-columns), 1fr);
-  }
+  .work-titles-wrapper { grid-template-columns: repeat(var(--grid-columns), 1fr); }
   
-  .work-title-left {
-    grid-column: 1 / 3;
-    text-align: left; /* Al margine sinistro */
-  }
-  
-  .work-title-right {
-    grid-column: 3 / 5;
-    text-align: right; /* Al margine destro */
-  }
+  .work-title-left { grid-column: 1 / 3; text-align: left; }
+  .work-title-right { grid-column: 3 / 5; text-align: right; }
 
-  /* About section mobile: margin top 12 baselines dal cerchio sovrastante */
-  .work-about {
-    margin-top: calc(var(--grid-baseline) * 12); 
-  }
-  
-  .work-about-text {
-    grid-column: 1 / 3; /* Usa tutte le colonne, se necessario */
-  }
-  
-  .work-projects-count {
-    grid-column: 3 / 5;
-    text-align: left; /* Allineato a sinistra dalla 3 colonna in poi */
-    margin-bottom: 0;
-  }
+  .work-about { margin-top: calc(var(--grid-baseline) * 12); }
+  .work-about-text { grid-column: 1 / 3; }
+  .work-projects-count { grid-column: 3 / 5; text-align: left; margin-bottom: 0; }
 
-  /* Gallery Mobile (1 colonna) */
-  .project-card {
-    grid-column: 1 / -1;
-  }
-}
-
-/* BREAKPOINT INTERMEDIO (Tablet/Laptop Piccolo) */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .project-card {
-    grid-column: span 6; /* 2 progetti per riga */
-  }
+  .project-card { grid-column: 1 / -1; }
 }

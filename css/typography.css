@@ -1,6 +1,7 @@
 /* ========================================
-   3. TYPOGRAPHY
+   TYPOGRAPHY
    ======================================== */
+
 body {
   font-family: var(--font-secondary);
   color: var(--color-text);
@@ -8,6 +9,9 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ----------------------------------------
+   TEXT STYLES
+   ---------------------------------------- */
 .type-display {
   font-family: var(--font-primary);
   font-weight: 300;
@@ -38,7 +42,7 @@ body {
   font-weight: 500;
   font-size: var(--type-works-size);
   line-height: var(--type-works-lh);
-  color: var(--color-accent); /* Prende sempre il colore d'accento */
+  color: var(--color-accent);
   margin: 0;
 }
 
@@ -51,13 +55,15 @@ body {
   margin: 0;
 }
 
-/* Credits alla fine dell'introduzione di progetto */
+/* ----------------------------------------
+   SPECIFIC ELEMENTS
+   ---------------------------------------- */
 .project-credits {
   font-family: var(--font-mono);
   font-weight: 400;
   font-size: var(--type-data-size);
   line-height: var(--type-data-lh);
   text-transform: uppercase;
-  color: var(--color-accent); /* Prende il colore d'accento */
+  color: var(--color-accent); 
   margin: 0;
 }

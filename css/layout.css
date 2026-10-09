@@ -1,8 +1,10 @@
 /* ========================================
-   4. LAYOUT
+   LAYOUT
    ======================================== */
-   
-/* Sticky Footer Setup */
+
+/* ----------------------------------------
+   A. STICKY FOOTER & BODY SETUP
+   ---------------------------------------- */
 html, body {
   min-height: 100vh;
 }
@@ -13,18 +15,20 @@ body {
 }
 
 main {
-  /* main riempie lo spazio disponibile, spingendo il footer giù */
+  /* main riempie lo spazio, spingendo il footer giù */
   flex: 1 0 auto; 
   display: flex;
   flex-direction: column;
 }
 
 .site-footer {
-  /* Impedisce al footer di restringersi in caso di problemi di spazio */
+  /* Impedisce al footer di restringersi */
   flex-shrink: 0;
 }
 
-/* Grid Container */
+/* ----------------------------------------
+   B. GRID CONTAINER
+   ---------------------------------------- */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
@@ -35,7 +39,7 @@ main {
 }
 
 /* ----------------------------------------
-   PAGE TRANSITIONS
+   C. GLOBAL PAGE TRANSITIONS
    ---------------------------------------- */
 main {
   opacity: 0;
@@ -46,5 +50,5 @@ main {
 
 body.page-loaded main {
   opacity: 1;
-  transform: none; /* LA MAGIA È QUI: 'none' resetta il comportamento e salva i position:fixed interni! */
+  transform: none; 
 }

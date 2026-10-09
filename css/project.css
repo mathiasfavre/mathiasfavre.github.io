@@ -2,18 +2,12 @@
    PROJECT PAGE SPECIFIC STYLES
    ======================================== */
 
-/* Rimuove il riquadro grigio di default su Safari Mobile al tap */
-a, button, input, select, textarea {
-  -webkit-tap-highlight-color: transparent;
-}
-
 .page-project {
-  /* Testo giustificato globale sulla pagina */
   text-align: justify;
 }
 
 /* ----------------------------------------
-   HERO IMAGE
+   A. HERO IMAGE
    ---------------------------------------- */
 .proj-hero-wrapper {
   margin-top: calc(var(--grid-baseline) * 12);
@@ -42,7 +36,7 @@ a, button, input, select, textarea {
 }
 
 /* ----------------------------------------
-   PROJECT INFO HEADER
+   B. PROJECT INFO HEADER
    ---------------------------------------- */
 .proj-info-wrapper {
   margin-top: calc(var(--grid-baseline) * 12);
@@ -51,24 +45,12 @@ a, button, input, select, textarea {
 }
 
 .proj-name { grid-column: 2 / 6; margin: 0; }
-
-.proj-class { 
-  grid-column: 6 / 8; 
-  text-align: left;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.proj-year { 
-  grid-column: 8 / 9; 
-  text-align: left;
-  margin: 0;
-}
-
+.proj-class { grid-column: 6 / 8; text-align: left; text-transform: uppercase; margin: 0; }
+.proj-year { grid-column: 8 / 9; text-align: left; margin: 0; }
 .proj-caption { grid-column: 9 / 12; margin: 0; }
 
 /* ----------------------------------------
-   GALLERY & DESCRIPTION SECTION
+   C. GALLERY & DESCRIPTION PANEL
    ---------------------------------------- */
 .proj-gallery-wrapper {
   position: relative;
@@ -77,13 +59,12 @@ a, button, input, select, textarea {
 }
 
 .proj-gallery-wrapper .grid-container {
-  align-items: start; /* Fondamentale per far affiancare le due colonne */
+  align-items: start; 
 }
 
-/* VIEW DEFAULT (NO DESC) */
 .gallery-grid {
   grid-column: 1 / -1;
-  grid-row: 1; /* Forziamo riga 1 */
+  grid-row: 1; 
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   column-gap: var(--grid-gutter);
@@ -108,27 +89,24 @@ a, button, input, select, textarea {
   display: block;
 }
 
-/* STATO BASE (Senza descrizione): Immagini larghe */
+/* Stato Base: Immagini Larghe */
 body:not(.desc-open) .img-01 { grid-column: 1 / 13; }
 body:not(.desc-open) .img-02 { grid-column: span 6; }
 
-/* Nascondi il pannello descrizione di default */
+/* Pannello Descrizione Nascosto */
 .proj-desc-panel {
-  display: none !important; /* Nascosto su mobile di defaul */
+  display: none !important; 
 }
 
+/* Stato Aperto (Desktop) */
 @media (min-width: 769px){
-
   body.desc-open .img-01, 
-  body.desc-open .img-02 {
-    grid-column: 1 / 8; 
-  }
+  body.desc-open .img-02 { grid-column: 1 / 8; }
 
-body.desc-open .proj-desc-panel {
+  body.desc-open .proj-desc-panel {
     display: block !important; 
     grid-column: 9 / 13;
     grid-row: 1;
-    
     position: sticky;
     top: calc(var(--grid-baseline) * 24); 
     height: max-content;
@@ -136,65 +114,36 @@ body.desc-open .proj-desc-panel {
   }
 }
 
-/* Formattazione Descrizione */
-.proj-desc-text {
-  margin-bottom: calc(var(--grid-baseline) * 12);
-}
-
-/* Formattazione Credits */
-.main-credits-title {
-  color: var(--color-accent);
-  margin-bottom: calc(var(--grid-baseline) * 8);
-  font-weight: 500;
-}
-
-.credits-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: var(--grid-gutter);
-}
-
-.credit-item {
-  margin-bottom: calc(var(--grid-baseline) * 8);
-}
-
-.credit-title {
-  color: var(--color-accent);
-  margin-bottom: calc(var(--grid-baseline) * 4);
-}
-
-.credit-value {
-  margin: 0;
-  text-align: left; /* Testo non giustificato */
-}
+/* Testi e Credits */
+.proj-desc-text { margin-bottom: calc(var(--grid-baseline) * 12); }
+.main-credits-title { color: var(--color-accent); margin-bottom: calc(var(--grid-baseline) * 8); font-weight: 500; }
+.credits-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--grid-gutter); }
+.credit-item { margin-bottom: calc(var(--grid-baseline) * 8); }
+.credit-title { color: var(--color-accent); margin-bottom: calc(var(--grid-baseline) * 4); }
+.credit-value { margin: 0; text-align: left; }
 
 /* ----------------------------------------
-   ABOUT BUTTON FIXED
+   D. ABOUT FIXED BUTTON
    ---------------------------------------- */
 .btn-about-fixed {
-  position: fixed; /* Fissa il bottone rispetto alla finestra del browser */
-  bottom: calc(var(--grid-baseline) * 20); /* Esattamente 24 baseline dal fondo */
+  position: fixed; 
+  bottom: calc(var(--grid-baseline) * 20); 
   left: 50%;
-  transform: translateX(-50%); /* Lo centra orizzontalmente alla perfezione */
-  z-index: 99; /* Deve stare sopra tutto (galleria e descrizione), ma sotto l'header (100) */
-  
+  transform: translateX(-50%); 
+  z-index: 99; 
   display: flex; 
   align-items: center;
   justify-content: center;
-  
   background-color: color-mix(in srgb, var(--color-accent) 10%, transparent);
   color: var(--color-text); 
   border: none;
-  
   padding: calc(var(--grid-baseline) * 2) calc(var(--grid-baseline) * 4);
   border-radius: calc(var(--grid-baseline) * 2);
-  
   font-family: var(--font-mono);
   font-size: var(--type-data-size);
   line-height: var(--type-data-lh);
   text-transform: uppercase;
   cursor: pointer;
-  
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: padding 0.3s ease, background-color 0.3s ease;
@@ -211,19 +160,6 @@ body.desc-open .proj-desc-panel {
   transition: width 0.3s ease, opacity 0.3s ease, margin-right 0.3s ease;
 }
 
-/* Sostituisci i vecchi blocchi :hover del bottone con questi: */
-@media (hover: hover) {
-  .btn-about-fixed:hover {
-    background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
-  }
-  
-  .btn-about-fixed:hover .btn-icon {
-    width: 20px; 
-    opacity: 1;
-    margin-right: calc(var(--grid-baseline) * 2); 
-  }
-}
-
 .btn-icon span {
   display: block;
   margin-top: -3px; 
@@ -231,13 +167,23 @@ body.desc-open .proj-desc-panel {
   transition: transform 0.3s ease;
 }
 
-/* Croce rotata se la descrizione è aperta */
 body.desc-open .btn-about-fixed .btn-icon span {
   transform: rotate(45deg);
 }
 
+@media (hover: hover) {
+  .btn-about-fixed:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
+  }
+  .btn-about-fixed:hover .btn-icon {
+    width: 20px; 
+    opacity: 1;
+    margin-right: calc(var(--grid-baseline) * 2); 
+  }
+}
+
 /* ----------------------------------------
-   FONT TESTER CONTROLS
+   E. FONT TESTER CONTROLS
    ---------------------------------------- */
 .font-tester-section {
   margin-top: 0; 
@@ -323,33 +269,20 @@ body.desc-open .btn-about-fixed .btn-icon span {
   white-space: pre-wrap; 
   word-wrap: break-word;
   transition: height var(--motion-normal) var(--ease-interaction), 
-              font-size 0.2s ease, letter-spacing 0.2s ease, line-height 0.2s ease;}
+              font-size 0.2s ease, letter-spacing 0.2s ease, line-height 0.2s ease;
+}
 
 /* ----------------------------------------
-   MOBILE OVERRIDES
+   F. MOBILE OVERRIDES
    ---------------------------------------- */
 @media (max-width: 768px) {
   
-  .proj-hero-wrapper {
-    grid-column: 1 / 5;
-  }
-
-  .proj-info-wrapper {
-    row-gap: 0; 
-  }
-
+  .proj-hero-wrapper { grid-column: 1 / 5; }
+  .proj-info-wrapper { row-gap: 0; }
   .proj-name { grid-column: 1 / 3; }
   .proj-class { grid-column: 3 / 4; }
-  
-  .proj-year { 
-    grid-column: 4 / 5; 
-    text-align: right; 
-  }
-  
-  .proj-caption { 
-    grid-column: 3 / 5;
-    margin-top: calc(var(--grid-baseline) * 4);
-  }
+  .proj-year { grid-column: 4 / 5; text-align: right; }
+  .proj-caption { grid-column: 3 / 5; margin-top: calc(var(--grid-baseline) * 4); }
 
   body:not(.desc-open) .img-01,
   body:not(.desc-open) .img-02,
@@ -358,21 +291,15 @@ body.desc-open .btn-about-fixed .btn-icon span {
     grid-column: 1 / 5; 
   }
   
-  /* VIEW DESC-OPEN (MOBILE) - Fade-in Overlay a pagina intera */
-  body.desc-open {
-    overflow: hidden; /* Blocca scorrimento pagina sotto */
-  }
+  body.desc-open { overflow: hidden; }
   
   body.desc-open .proj-desc-panel {
     display: block !important;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-    bottom: 0;
-    z-index: 80; 
-    box-sizing: border-box; /* Impedisce strabordamenti laterali */
+    top: 0; left: 0;
+    width: 100vw; height: 100dvh;
+    bottom: 0; z-index: 80; 
+    box-sizing: border-box; 
     background-color: var(--color-bg);
     padding-top: calc(var(--header-margin-top) + calc(var(--grid-baseline) * 16));
     padding-left: var(--grid-margin);
@@ -381,15 +308,7 @@ body.desc-open .btn-about-fixed .btn-icon span {
     overflow-y: auto;
   }
   
-  .proj-desc-text {
-    width: 100%;
-  }
-
-  .credits-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  
-  body.desc-open .site-footer {
-    display: none;
-  }
+  .proj-desc-text { width: 100%; }
+  .credits-grid { grid-template-columns: 1fr 1fr; }
+  body.desc-open .site-footer { display: none; }
 }

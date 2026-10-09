@@ -2,27 +2,22 @@
    HOME PAGE SPECIFIC STYLES
    ======================================== */
 
+/* ----------------------------------------
+   A. HERO & CIRCLES
+   ---------------------------------------- */
 .home-hero {
-  /* Portato a 16 baseline come richiesto */
   margin-top: calc(var(--grid-baseline) * 20); 
   position: relative;
   align-items: center; 
 }
 
-/* ----------------------------------------
-   CERCHI DESKTOP (Logica Max-Width per Intersezione)
-   ---------------------------------------- */
 .circles-wrapper {
   grid-column: 1 / -1;
   grid-row: 1;
   width: 100%;
-  /* 
-     Desktop: Cerchi a 96 baseline, area intersezione 36 baseline.
-     Larghezza totale necessaria = 96 + 96 - 36 = 156 baselines.
-  */
   max-width: calc(var(--grid-baseline) * 156);
   height: calc(var(--grid-baseline) * 96);
-  margin: 0 auto; /* Centra il gruppo nell'area di lavoro */
+  margin: 0 auto;
   position: relative;
   z-index: 2;
 }
@@ -34,14 +29,15 @@
   position: absolute;
   top: 0;
   cursor: pointer;
-  
-  /* L'animazione base Breath per il movimento ambientale */
   animation: breath var(--motion-breath) var(--ease-ambient) infinite alternate;
-  
-  /* Transizioni di stato */
   transition: filter var(--motion-normal) var(--ease-interaction),
               background-color var(--motion-normal) var(--ease-interaction),
-              transform var(--motion-fast) var(--ease-interaction); /* Fast per seguire il mouse */
+              transform var(--motion-fast) var(--ease-interaction); 
+              
+  /* FIX SAFARI BUG: Evita glitch visivi sui bordi del blur */
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  will-change: filter, transform;
 }
 
 @keyframes breath {
@@ -61,7 +57,7 @@
   filter: blur(8px);
 }
 
-/* LOGICA GAZE SU HOVER */
+/* Hover States for Circles */
 .circles-wrapper:hover .circle-left {
   filter: blur(var(--blur-far));
   background-color: color-mix(in srgb, var(--color-alpine) 10%, transparent);
@@ -72,18 +68,18 @@
 }
 
 .circles-wrapper .circle-left:hover {
-  filter: blur(0); /* Mette a fuoco */
+  filter: blur(0);
   background-color: color-mix(in srgb, var(--color-alpine) 17%, transparent);
   z-index: 5;
 }
 .circles-wrapper .circle-right:hover {
-  filter: blur(0); /* Mette a fuoco */
+  filter: blur(0);
   background-color: color-mix(in srgb, var(--color-bordeaux) 17%, transparent);
   z-index: 5;
 }
 
 /* ----------------------------------------
-   TITOLI HOME
+   B. TITLES
    ---------------------------------------- */
 .home-titles-wrapper {
   grid-column: 1 / -1;
@@ -91,11 +87,9 @@
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), 1fr);
   column-gap: var(--grid-gutter);
-  
   align-items: end; 
   pointer-events: none;
   z-index: 10;
-  
   grid-template-rows: auto auto; 
   row-gap: calc(var(--grid-baseline) * 8);
 }
@@ -121,30 +115,18 @@
   transition: opacity 0.4s ease;
 }
 
-.hover-left {
-  grid-column: 1 / 7;
-  text-align: left;
-}
-
-.hover-right {
-  grid-column: 7 / 13;
-  text-align: right;
-}
+.hover-left { grid-column: 1 / 7; text-align: left; }
+.hover-right { grid-column: 7 / 13; text-align: right; }
 
 .home-hero:has(.circle-left:hover) .hover-left { opacity: 1; }
 .home-hero:has(.circle-right:hover) .hover-right { opacity: 1; }
 
 /* ----------------------------------------
-   ABOUT TEASER SECTION & COORDINATE
+   C. ABOUT TEASER SECTION & COORDINATES
    ---------------------------------------- */
 .home-about {
   margin-top: calc(var(--grid-baseline) * 12);
-  
-  /* Mantiene il distacco dal footer fisso e sicuro.
-     Il flex globale del body spingerà il footer in fondo allo schermo
-     se c'è spazio, altrimenti ci saranno esattamente 16 baselines di margine. */
   margin-bottom: calc(var(--grid-baseline) * 16);
-  
   align-items: end;
 }
 
@@ -178,33 +160,18 @@
   margin-bottom: var(--type-body-lh); 
 }
 
-
 /* ----------------------------------------
-   MOBILE OVERRIDES
+   D. MOBILE OVERRIDES
    ---------------------------------------- */
 @media (max-width: 768px) {
-  .home-hero {
-    display: flex;
-    flex-direction: column;
-  }
+  .home-hero { display: flex; flex-direction: column; }
   
-  /* Cerchi Mobile: 72 Baseline e intersezione automatica elastica */
   .circles-wrapper {
     display: block;
     width: 100%;
-    /* 
-       Mobile: Cerchi a 72 baseline, area intersezione target 24 baseline.
-       Larghezza totale = 72 + 72 - 24 = 120 baselines.
-       
-       Utilizzando max-width e margin: 0 auto, il gruppo rimarrà centrato 
-       finché la pagina è più larga. Se la pagina si restringe, si legano ai 
-       margini esterni della pagina (perché toccano i bordi) e l'intersezione
-       interno aumenta organicamente.
-    */
     max-width: calc(var(--grid-baseline) * 120);
     height: calc(var(--grid-baseline) * 64); 
-    margin: 0 auto;
-    margin-bottom: calc(var(--grid-baseline) * 12);
+    margin: 0 auto calc(var(--grid-baseline) * 12) auto;
   }
   
   .home-circle {
@@ -217,25 +184,15 @@
     grid-template-columns: repeat(var(--grid-columns), 1fr);
   }
   
-  .home-title-left {
-    grid-column: 1 / 3;
-    white-space: normal;
-  }
-  .home-title-right {
-    grid-column: 3 / 5;
-    text-align: right;
-  }
+  .home-title-left { grid-column: 1 / 3; white-space: normal; }
+  .home-title-right { grid-column: 3 / 5; text-align: right; }
+  
   .hover-left { grid-column: 1 / 3; }
   .hover-right { grid-column: 3 / 5; }
 
-  /* About section mobile */
-  .home-about {
-    margin-top: calc(var(--grid-baseline) * 16); 
-  }
+  .home-about { margin-top: calc(var(--grid-baseline) * 16); }
   
-  .home-about-text {
-    grid-column: 1 / 3;
-  }
+  .home-about-text { grid-column: 1 / 3; }
   
   .home-coord-left { 
     grid-column: 3 / 5;
