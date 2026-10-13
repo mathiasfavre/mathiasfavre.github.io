@@ -304,15 +304,22 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       }
 
-      // --- Intersection Observer (Fade-in Immagini) ---
+      // --- Intersection Observer (Fade-in Immagini & Comparsa Bottone About) ---
       const projObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
+            // Fa apparire l'immagine
             entry.target.classList.add('is-visible');
             projObserver.unobserve(entry.target);
+            
+            // Se l'elemento che è appena comparso è la PRIMA immagine della galleria, fa scivolare su il bottone
+            if (entry.target === document.querySelector('.gallery-item') && aboutBtn) {
+                aboutBtn.classList.add('is-visible');
+            }
           }
         });
       }, { threshold: 0.1 });
+      
       setTimeout(() => {
         document.querySelectorAll('.gallery-item').forEach(el => projObserver.observe(el));
       }, 300);
