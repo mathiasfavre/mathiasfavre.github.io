@@ -169,14 +169,14 @@
   .circles-wrapper {
     display: block;
     width: 100%;
-    max-width: calc(var(--grid-baseline) * 120);
-    height: calc(var(--grid-baseline) * 64); 
+    max-width: calc(var(--grid-baseline) * 96);
+    height: calc(var(--grid-baseline) * 56); 
     margin: 0 auto calc(var(--grid-baseline) * 12) auto;
   }
   
   .home-circle {
-    width: calc(var(--grid-baseline) * 64);
-    height: calc(var(--grid-baseline) * 64);
+    width: calc(var(--grid-baseline) * 56);
+    height: calc(var(--grid-baseline) * 56);
   }
   
   .home-titles-wrapper {

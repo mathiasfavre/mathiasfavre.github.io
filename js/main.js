@@ -304,16 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       }
 
-      // --- Intersection Observer (Fade-in Immagini & Comparsa Bottone About) ---
+      // --- Intersection Observer (Fade-in Immagini) ---
       const projObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Fa apparire l'immagine
             entry.target.classList.add('is-visible');
             projObserver.unobserve(entry.target);
             
-            // Se l'elemento che è appena comparso è la PRIMA immagine della galleria, fa scivolare su il bottone
-            if (entry.target === document.querySelector('.gallery-item') && aboutBtn) {
+            // FIX SAFARI: Usa classList.contains invece di querySelector per l'uguaglianza
+            if (entry.target.classList.contains('gallery-item') && aboutBtn) {
                 aboutBtn.classList.add('is-visible');
             }
           }
