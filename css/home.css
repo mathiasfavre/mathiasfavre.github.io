@@ -125,8 +125,8 @@
    C. ABOUT TEASER SECTION & COORDINATES
    ---------------------------------------- */
 .home-about {
-  margin-top: calc(var(--grid-baseline) * 12);
-  margin-bottom: calc(var(--grid-baseline) * 16);
+  margin-top: calc(var(--grid-baseline) * 8);
+  margin-bottom: calc(var(--grid-baseline) * 12);
   align-items: end;
 }
 
@@ -190,7 +190,7 @@
   .hover-left { grid-column: 1 / 3; }
   .hover-right { grid-column: 3 / 5; }
 
-  .home-about { margin-top: calc(var(--grid-baseline) * 16); }
+  .home-about { margin-top: calc(var(--grid-baseline) * 8); }
   
   .home-about-text { grid-column: 1 / 3; }
   
