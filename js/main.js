@@ -39,26 +39,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // --- FIX SAFARI: VIDEO AUTOPLAY & LOW POWER MODE ---
+    // --- FIX SAFARI DEFINITIVO: GESTIONE INTELLIGENTE DELLE RISORSE ---
   const enforceVideoAutoplay = () => {
     const videos = document.querySelectorAll('video');
+    
+    const videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          video.play().catch(() => { video.classList.add('low-power-blocked'); });
+        } else {
+          video.pause(); 
+        }
+      });
+    }, { rootMargin: '50px', threshold: 0.1 });
+
     videos.forEach(video => {
+      if (video.dataset.safariFixed) return;
+      video.dataset.safariFixed = 'true';
       video.muted = true;
+      video.defaultMuted = true;
       video.playsInline = true;
-      video.autoplay = true;
       video.loop = true;
-      
-      // I video decorativi non devono mostrare controlli
+      video.setAttribute('muted', 'muted');
+      video.setAttribute('playsinline', 'playsinline');
+      video.setAttribute('loop', 'loop');
+
       if (!video.hasAttribute('onmouseenter')) {
         video.removeAttribute('controls');
       }
-      
-      let playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          video.classList.add('low-power-blocked');
-        });
-      }
+
+      videoObserver.observe(video);
+      setInterval(() => {
+        const rect = video.getBoundingClientRect();
+        const inViewport = rect.top < window.innerHeight && rect.bottom > 0;
+        
+        if (inViewport && video.paused && !video.classList.contains('low-power-blocked')) {
+           video.play().catch(() => {});
+        }
+      }, 2000);
     });
   };
 
@@ -304,17 +323,12 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       }
 
-      // --- Intersection Observer (Fade-in Immagini) ---
+            // --- Intersection Observer (Fade-in Immagini) ---
       const projObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
             projObserver.unobserve(entry.target);
-            
-            // FIX SAFARI: Usa classList.contains invece di querySelector per l'uguaglianza
-            if (entry.target.classList.contains('gallery-item') && aboutBtn) {
-                aboutBtn.classList.add('is-visible');
-            }
           }
         });
       }, { threshold: 0.1 });
@@ -322,6 +336,24 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => {
         document.querySelectorAll('.gallery-item').forEach(el => projObserver.observe(el));
       }, 300);
+
+      // --- Comparsa/Scomparsa Dinamica Bottone About ---
+      const infoWrapper = document.querySelector('.proj-info-wrapper');
+      if (aboutBtn && infoWrapper) {
+        const btnObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            // Se l'intestazione scompare in alto (boundingClientRect.top < 0)
+            if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+              aboutBtn.classList.add('is-visible');
+            } else {
+              // Se l'intestazione rientra nello schermo
+              aboutBtn.classList.remove('is-visible');
+            }
+          });
+        }, { threshold: 0 }); // 0 significa che scatta appena esce del tutto dallo schermo
+        
+        btnObserver.observe(infoWrapper);
+      }
 
       // --- Sticky Panel Math (Desktop Only) ---
       const descPanel = document.querySelector('.proj-desc-panel');
@@ -368,15 +400,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         document.head.appendChild(style);
 
-        const weightOptions = weights.map(w => `<option value="${w}">${w}</option>`).join('');
+                const weightOptions = weights.map(w => `<option value="${w}">${w}</option>`).join('');
+        
+        // Determina la size iniziale in base allo schermo
+        const isMobile = window.innerWidth <= 768;
+        const defaultSize = isMobile ? 50 : 80;
+
         const testerHtml = `
           <section class="grid-container font-tester-section">
             <div class="font-tester-wrapper">
               <div class="font-tester-controls">
                 ${isTonica ? `<select id="ft-weight" class="ft-select">${weightOptions}</select>` : `<div class="ft-static-weight">Regular</div>`}
-                <div class="ft-control"><label>Size</label><input type="range" id="ft-size" min="10" max="200" value="80"><span id="ft-size-val">80</span></div>
-                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="20" value="10"><span id="ft-leading-val">10</span></div>
-                <div class="ft-control"><label>Spacing</label><input type="range" id="ft-spacing" min="-20" max="20" value="0"><span id="ft-spacing-val">0</span></div>
+                <div class="ft-control"><label>Size</label><input type="range" id="ft-size" min="20" max="200" value="${defaultSize}"><span id="ft-size-val">${defaultSize}</span></div>
+                <div class="ft-control"><label>Leading</label><input type="range" id="ft-leading" min="0" max="30" value="10"><span id="ft-leading-val">10</span></div>
+                <div class="ft-control"><label>Spacing</label><input type="range" id="ft-spacing" min="-10" max="20" value="0"><span id="ft-spacing-val">0</span></div>
               </div>
               <textarea id="ft-textarea" class="ft-textarea" maxlength="100" spellcheck="false">The quick brown fox jumps over the lazy dog.</textarea>
             </div>

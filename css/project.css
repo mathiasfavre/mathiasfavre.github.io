@@ -179,23 +179,6 @@ body:not(.desc-open) .img-02 { grid-column: span 6; }
               background-color 0.3s ease;
 }
 
-/* LA CLASSE "MAGICA" AGGIUNTA DAL JS ALLO SCROLL */
-.btn-about-fixed.is-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  
-  /* FIX SAFARI: Aggiunto il prefisso webkit */
-  transform: translateX(-50%) translateY(0);
-  -webkit-transform: translateX(-50%) translateY(0);
-  
-  transition: opacity var(--motion-slow) var(--ease-interaction), 
-              transform var(--motion-slow) var(--ease-interaction),
-              visibility 0s linear 0s,
-              padding 0.3s ease, 
-              background-color 0.3s ease;
-}
-
 .btn-icon {
   display: flex;
   align-items: center;
@@ -227,6 +210,16 @@ body.desc-open .btn-about-fixed .btn-icon span {
     opacity: 1;
     margin-right: calc(var(--grid-baseline) * 2); 
   }
+}
+
+body.menu-open .btn-about-fixed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  
+  /* Lo fa scivolare leggermente in basso mentre scompare */
+  transform: translateX(-50%) translateY(24px) !important;
+  -webkit-transform: translateX(-50%) translateY(24px) !important;
 }
 
 /* ----------------------------------------
@@ -353,6 +346,33 @@ body.desc-open .btn-about-fixed .btn-icon span {
     padding-right: var(--grid-margin);
     padding-bottom: calc(var(--grid-baseline) * 32);
     overflow-y: auto;
+  }
+
+    /* --- OTTIMIZZAZIONE FONT TESTER MOBILE --- */
+  .font-tester-wrapper {
+    /* Riduciamo il padding interno da 6 baseline (24px) a 4 baseline (16px) */
+    padding: calc(var(--grid-baseline) * 4);
+  }
+
+  .font-tester-controls {
+    /* Stringiamo il gap tra i comandi */
+    gap: calc(var(--grid-baseline) * 4);
+    /* Incolonna i comandi per evitare accavallamenti */
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ft-control {
+    /* Ogni controllo occupa l'intera larghezza e spazia il contenuto ai lati */
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .ft-control input[type="range"] {
+    /* Il cursore del volume si allarga per riempire comodamente lo spazio centrale, perfetto per il dito */
+    width: auto;
+    flex-grow: 1;
+    margin: 0 calc(var(--grid-baseline) * 3);
   }
   
   .proj-desc-text { width: 100%; }
